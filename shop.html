@@ -53,18 +53,9 @@
       font-size: 2rem;
     }
 
-    .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
-}
-
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   padding: 2rem;
   max-width: 1200px;
@@ -101,6 +92,38 @@
 .gallery-item a {
   text-decoration: none;
 }
+
+.gallery-item h2 {
+  margin-bottom: 0.3rem;
+}
+
+.gallery-item p {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.featured-book {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.featured-book img {
+  width: 300px;
+  max-width: 90%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.featured-book h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.featured-book p {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
 
     footer {
       text-align: center;
@@ -147,6 +170,14 @@
 
   </header>
 
+<section class="featured-book">
+  <img src="https://via.placeholder.com/300x450?text=Book+Cover" alt="Book Title" />
+  <h1>The Book Title</h1>
+  <p>“A haunting and beautiful debut fantasy novel.”</p>
+  <button class="add-button">Add to Cart</button>
+</section>
+
+  
 <section class="gallery">
   <div class="gallery-item">
     <a href="#">
