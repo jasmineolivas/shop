@@ -93,6 +93,9 @@
       align-items: center;
       gap: 1rem;
     }
+    .cart-controls span {
+      background-color: #D98F59;
+    }
     .cart-controls button {
       background: none;
       border: none;
@@ -165,9 +168,7 @@
           <button onclick="selectSize('6x9')">6x9</button>
           <button onclick="selectSize('8.5x11')">8.5x11</button>
         </div>
-        <div class="cart-controls" id="cart-controls">
-          <button onclick="addToCart()">Add to Cart</button>
-        </div>
+        <div id="cart-controls-wrapper"></div>
       </div>
     </div>
     <div class="policy-section">
@@ -184,31 +185,31 @@
 
   <script>
     let selectedSize = '6x9';
-    let quantity = 0;
 
     function selectSize(size) {
       selectedSize = size;
-      const priceElement = document.getElementById('price');
-      priceElement.textContent = size === '8.5x11' ? '$17' : '$15';
+      document.getElementById('price').textContent = size === '8.5x11' ? '$17' : '$15';
+      renderCartControls();
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+      document.getElementById('cart-count').textContent = count > 0 ? `(${count})` : '';
     }
 
     function renderCartControls() {
+      const wrapper = document.getElementById('cart-controls-wrapper');
       const cart = JSON.parse(localStorage.getItem('cart')) || {};
       const id = `coverart-${selectedSize}`;
-      quantity = cart[id] || 0;
-
-      const container = document.getElementById('cart-controls');
-      if (quantity === 0) {
-        container.innerHTML = `<button onclick="addToCart()">Add to Cart</button>`;
-      } else {
-        container.innerHTML = `
-          <div class="cart-controls">
-            <button onclick="decreaseQty()">-</button>
-            <span>${quantity} in cart</span>
-            <button onclick="increaseQty()">+</button>
-          </div>
-        `;
-      }
+      const qty = cart[id] || 0;
+      wrapper.innerHTML = qty > 0 ? `
+        <div class="cart-controls">
+          <button onclick="decreaseQty()">-</button>
+          <span>${qty} in cart</span>
+          <button onclick="increaseQty()">+</button>
+        </div>
+      ` : `<div class="cart-controls"><button onclick="addToCart()">Add to Cart</button></div>`;
     }
 
     function addToCart() {
@@ -237,13 +238,6 @@
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
       renderCartControls();
-    }
-
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-      const cartCount = document.getElementById('cart-count');
-      cartCount.textContent = count > 0 ? `(${count})` : '';
     }
 
     document.getElementById('zoom-img').addEventListener('click', () => {
