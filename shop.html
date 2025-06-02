@@ -6,7 +6,7 @@
   <title>Shop | The Dead Fall In Line</title>
   <style>
     .cart-bar {
-  background-color: #D98F59;
+  background-color: ##171516;
   text-align: right;
   padding: 0.5rem 1rem;
 }
@@ -45,7 +45,7 @@
       height: auto;
       display: block;
       object-fit: cover;
-      margin-bottom: 2rem;
+      margin-bottom: 0;
     }
 
     h1 {
@@ -104,6 +104,29 @@
       font-size: 0.9rem;
       color: #777;
     }
+    .hidden {
+  display: none;
+}
+
+.cart-controls {
+  margin-top: 1rem;
+}
+
+.cart-controls button {
+  background-color: #D98F59;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin: 0 0.25rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.cart-controls span.quantity {
+  font-weight: bold;
+}
+
   </style>
 </head>
 <body>
@@ -121,11 +144,15 @@
       <img src="https://via.placeholder.com/300x450?text=Book+Cover" alt="Book Title" />
       <h2>The Dead Fall In Line</h2>
       <p>Preorder coming soon</p>
-      <div class="btn-group">
-        <a class="btn" href="#">Add to Cart</a>
-        <a class="btn" href="#">Buy on Amazon</a>
-      </div>
-    </div>
+      <div class="cart-controls" data-product-id="book1">
+  <button class="add-button">Add to cart</button>
+  <div class="quantity-controls hidden">
+    <button class="decrease">−</button>
+    <span class="quantity">1 in cart</span>
+    <button class="increase">+</button>
+  </div>
+</div>
+
 
     <div class="item">
       <img src="https://via.placeholder.com/300x300?text=Illustration" alt="Art Print" />
@@ -141,5 +168,37 @@
   <footer>
     &copy; 2025 Jasmine Olivas — All Rights Reserved
   </footer>
+  <script>
+  document.querySelectorAll('.cart-controls').forEach(control => {
+    const addButton = control.querySelector('.add-button');
+    const quantityControls = control.querySelector('.quantity-controls');
+    const quantityText = quantityControls.querySelector('.quantity');
+    let quantity = 1;
+
+    addButton.addEventListener('click', () => {
+      addButton.classList.add('hidden');
+      quantityControls.classList.remove('hidden');
+      quantity = 1;
+      quantityText.textContent = `${quantity} in cart`;
+    });
+
+    quantityControls.querySelector('.increase').addEventListener('click', () => {
+      quantity++;
+      quantityText.textContent = `${quantity} in cart`;
+    });
+
+    quantityControls.querySelector('.decrease').addEventListener('click', () => {
+      quantity--;
+      if (quantity <= 0) {
+        quantity = 0;
+        quantityControls.classList.add('hidden');
+        addButton.classList.remove('hidden');
+      } else {
+        quantityText.textContent = `${quantity} in cart`;
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
