@@ -144,6 +144,19 @@
       margin-top: 1rem;
     }
 
+    .cart-link {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+#cart-count {
+  font-weight: bold;
+  margin-left: 0.25rem;
+}
+
+
   .cart-controls button {
       background-color: #D98F59;
       color: white;
@@ -172,6 +185,11 @@
     🛒
   </a>
 </div>
+
+  <a href="cart.html" class="cart-link">
+  🛒 <span id="cart-count">0</span>
+</a>
+
 
   </header>
 
@@ -362,6 +380,70 @@
       render(); // initialize on load
     });
   });
+</script>
+
+<script>
+  function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || {};
+    const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+    const badge = document.querySelector('#cart-count');
+    if (badge) badge.textContent = totalItems;
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadge();
+  }
+
+  document.querySelectorAll('.cart-controls').forEach(control => {
+    const productId = control.dataset.productId;
+    const addButton = control.querySelector('.add-button');
+    const quantityControls = control.querySelector('.quantity-controls');
+    const quantityText = control.querySelector('.quantity');
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
+    let quantity = cart[productId] || 0;
+
+    if (quantity > 0) {
+      addButton.classList.add('hidden');
+      quantityControls.classList.remove('hidden');
+      quantityText.textContent = `${quantity} in cart`;
+    }
+
+    addButton.addEventListener('click', () => {
+      quantity = 1;
+      cart[productId] = quantity;
+      saveCart(cart);
+      addButton.classList.add('hidden');
+      quantityControls.classList.remove('hidden');
+      quantityText.textContent = `1 in cart`;
+    });
+
+    control.querySelector('.increase').addEventListener('click', () => {
+      quantity++;
+      cart[productId] = quantity;
+      saveCart(cart);
+      quantityText.textContent = `${quantity} in cart`;
+    });
+
+    control.querySelector('.decrease').addEventListener('click', () => {
+      quantity--;
+      if (quantity <= 0) {
+        delete cart[productId];
+        saveCart(cart);
+        quantity = 0;
+        quantityControls.classList.add('hidden');
+        addButton.classList.remove('hidden');
+      } else {
+        cart[productId] = quantity;
+        saveCart(cart);
+        quantityText.textContent = `${quantity} in cart`;
+      }
+    });
+  });
+
+  // Initialize cart badge on load
+  updateCartBadge();
 </script>
 
   
