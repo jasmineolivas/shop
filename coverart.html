@@ -3,31 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Owl and Moon – Shop</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Owl and Moon – $15</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    .cart-bar {
+      background-color: #171516;
+      text-align: right;
+      padding: 0.5rem 1rem;
+    }
+
+    .cart-link {
+      font-size: 2rem;
+      text-decoration: none;
+      color: white;
+    }
+
+    #cart-count {
+      color: white;
+    }
+
+    .product {
+      max-width: 400px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+
+    .product img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .cart-controls {
+      margin-top: 1rem;
+    }
+
+    .quantity-controls {
+      display: none;
+    }
+
+    .quantity {
+      margin: 0 1rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .button {
+      background: #d98f59;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-  <div class="product-page">
-    <img src="images/owl-moon.jpg" alt="Owl and Moon" class="product-image" />
+  <div class="cart-bar">
+    <a href="cart.html" class="cart-link" title="Go to cart">🛒 <span id="cart-count">0</span></a>
+  </div>
 
-    <div class="product-info">
-      <h1>Owl and Moon</h1>
-      <p class="price">$15.00</p>
-      <p class="description">
-        8x10" black and white print on textured cardstock. Inspired by [your theme].
-      </p>
+  <div class="product">
+    <h1>Owl and Moon</h1>
+    <img src="images/owl-moon.jpg" alt="Owl and Moon" />
+    <p>$15.00</p>
 
-      <div class="cart-controls" data-product-id="owl-moon">
-        <button class="add-button">Add to cart</button>
-        <div class="quantity-controls hidden">
-          <button class="decrease">−</button>
-          <span class="quantity">1 in cart</span>
-          <button class="increase">+</button>
-        </div>
+    <div class="cart-controls" data-product-id="owl-moon">
+      <button class="button add-button">Add to Cart</button>
+      <div class="quantity-controls">
+        <button class="button decrease">−</button>
+        <span class="quantity">1 in cart</span>
+        <button class="button increase">+</button>
       </div>
     </div>
   </div>
 
-  <script src="cart.js"></script>
+  <script>
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+      const badge = document.querySelector('#cart-count');
+      if (badge) badge.textContent = totalItems;
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartBadge();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartBadge();
+
+      document.querySelectorAll('.cart-controls').forEach(control => {
+        const productId = control.dataset.productId;
+        const addButton = control.querySelector('.add-button');
+        const quantityControls = control.querySelector('.quantity-controls');
+        const quantityText = control.querySelector('.quantity');
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || {};
+        let quantity = cart[productId] || 0;
+
+        if (quantity > 0) {
+          addButton.classList.add('hidden');
+          quantityControls.style.display = 'inline-block';
+          quantityText.textContent = `${quantity} in cart`;
+        }
+
+        addButton.addEventListener('click', () => {
+          quantity = 1;
+          cart[productId] = quantity;
+          saveCart(cart);
+          addButton.classList.add('hidden');
+          quantityControls.style.display = 'inline-block';
+          quantityText.textContent = `1 in cart`;
+        });
+
+        control.querySelector('.increase').addEventListener('click', () => {
+          quantity++;
+          cart[productId] = quantity;
+          saveCart(cart);
+          quantityText.textContent = `${quantity} in cart`;
+        });
+
+        control.querySelector('.decrease').addEventListener('click', () => {
+          quantity--;
+          if (quantity <= 0) {
+            delete cart[productId];
+            saveCart(cart);
+            quantity = 0;
+            quantityControls.style.display = 'none';
+            addButton.classList.remove('hidden');
+          } else {
+            cart[productId] = quantity;
+            saveCart(cart);
+            quantityText.textContent = `${quantity} in cart`;
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
