@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cover Art – Shop</title>
+  <title>Owl and Moon – Shop</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="product-page">
-    <img src="images/owl-moon.jpg" alt="Cover Art" class="product-image" />
+    <img src="images/owl-moon.jpg" alt="Owl and Moon" class="product-image" />
 
     <div class="product-info">
-      <h1>Cover Art</h1>
+      <h1>Owl and Moon</h1>
       <p class="price">$15.00</p>
       <p class="description">
         8x10" black and white print on textured cardstock. Inspired by [your theme].
