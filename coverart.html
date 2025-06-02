@@ -74,15 +74,28 @@
       font-size: 1.25rem;
       margin: 0.5rem 0;
     }
-    .size-buttons button {
-      margin-right: 1rem;
-      background: none;
-      border: 1px solid #D98F59;
-      color: #D98F59;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      border-radius: 0.25rem;
-    }
+.size-buttons button {
+  margin-right: 1rem;
+  background: none;
+  border: 1px solid #000; /* black border */
+  color: #000;            /* black text */
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+    .size-buttons button:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.size-buttons button.selected {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+
     .cart-controls {
       margin-top: 1rem;
       background-color: #D98F59;
@@ -163,11 +176,17 @@
       <div class="product-details">
         <h1>Cover Art</h1>
         <p class="price" id="price">$15</p>
-        <p>This is where the description of the print will go. High quality print from the illustrated book. Printed on blabla paper, super cool drawing, etc. "Caption from the book where the illustration is found"</p>
-        <div class="size-buttons">
-          <button onclick="selectSize('6x9')">6x9</button>
-          <button onclick="selectSize('8.5x11')">8.5x11</button>
-        </div>
+<p>
+  This is where the description of the print will go. High quality print from the illustrated book. Printed on blabla paper, super cool drawing, etc.<br />
+  <em>"Caption from the book where the illustration is found"</em>
+</p>
+
+
+<div class="size-buttons">
+  <button data-size="6x9" onclick="selectSize('6x9')">6x9</button>
+  <button data-size="8.5x11" onclick="selectSize('8.5x11')">8.5x11</button>
+</div>
+
         <div id="cart-controls-wrapper"></div>
       </div>
     </div>
@@ -188,6 +207,15 @@
 
 function selectSize(size) {
   selectedSize = size;
+  // Update selected button style
+document.querySelectorAll('.size-buttons button').forEach(btn => {
+  if (btn.getAttribute('data-size') === size) {
+    btn.classList.add('selected');
+  } else {
+    btn.classList.remove('selected');
+  }
+});
+
   localStorage.setItem('selectedSize', selectedSize);
   const priceElement = document.getElementById('price');
   priceElement.textContent = size === '8.5x11' ? '$17' : '$15';
