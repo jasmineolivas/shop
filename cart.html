@@ -2,21 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Your Cart</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background-color: #fff8f3;
-    }
-    h1 {
-      color: #D98F59;
-    }
+    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    th, td { border-bottom: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    img { width: 60px; height: 60px; object-fit: cover; }
+    .quantity-controls button { padding: 0.2rem 0.5rem; }
+    #shipping { margin: 1rem 0; }
+    #checkout { padding: 0.7rem 1.2rem; background: #D98F59; border: none; color: white; font-size: 1rem; cursor: pointer; }
   </style>
 </head>
 <body>
+
   <h1>Your Cart</h1>
-  <p>This is where your cart items will go.</p>
+
+  <table id="cart-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price Each</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Cart items will be inserted here -->
+    </tbody>
+  </table>
+
+  <div id="cart-summary">
+    <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+    <div id="shipping">
+      <label for="zip">Enter ZIP for shipping: </label>
+      <input type="text" id="zip" maxlength="10" />
+      <button id="calculate-shipping">Calculate Shipping</button>
+      <p id="shipping-cost"></p>
+    </div>
+    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
+  </div>
+
+  <button id="checkout">Proceed to Payment</button>
+
+  <script>
+    // Example product data (you will replace this with your real product info)
+    const products = {
+      "prod1": { name: "Art Print 1", price: 15.99, image: "art1.jpg" },
+      "prod2": { name: "Art Print 2", price: 22.50, image: "art2.jpg" },
+      // Add more products here as needed
+    };
+
+    const cartTableBody = document.querySelector('#cart-table tbody');
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('total');
+    const shippingCostEl = document.getElementById('shipping-cost');
+    const zipInput = document.getElementById('zip');
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
+    let shippingCost = 0;
+
+    function renderCart() {
+      cartTableBody.innerHTML = '';
+      let subtotal = 0;
+
+      for (const productId in cart) {
+        const product = products[productId];
+        if (!product) continue; // safety check
+        const qty = cart[productId];
+        const lineTotal = product.price * qty;
+        subtotal += lineTotal;
+
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+          <td>
+            <img src="${product.image}" alt="${product.name}" />
+            <span>${product.name}</span>
+          </td>
+          <td>
+            <div class="quantity-controls">
+              <button class="decrease">-</button>
+              <span>${qty}</span>
+              <button class="increase">+</button>
+            </div>
+          </td>
+          <td>$${product.price.toFixed(2)}</td>
+          <td>$${lineTotal.toFixed(2)}</td>
+        `;
+
+        // Add event listeners for + and - buttons
+        tr.querySelector('.increase').addEventListener('click', () => {
+          cart[productId]++;
+          saveCart();
+          renderCart();
+        });
+
+        tr.querySelector('.decrease').addEventListener('click', () => {
+          cart[productId]--;
+          if (cart[productId] <= 0) {
+            delete cart[productId];
+          }
+          saveCart();
+          renderCart();
+        });
+
+        cartTableBody.appendChild(tr);
+      }
+
+      subtotalEl.textContent = subtotal.toFixed(2);
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const subtotal = parseFloat(subtotalEl.textContent);
+      const total = subtotal + shippingCost;
+      totalEl.textContent = total.toFixed(2);
+    }
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    document.getElementById('calculate-shipping').addEventListener('click', () => {
+      const zip = zipInput.value.trim();
+      if (!zip.match(/^\d{5}(-\d{4})?$/)) {
+        shippingCostEl.textContent = "Please enter a valid US ZIP code.";
+        shippingCost = 0;
+      } else {
+        // Dummy shipping calculator - replace with your logic or API call
+        shippingCost = 5.99;
+        shippingCostEl.textContent = `Shipping: $${shippingCost.toFixed(2)}`;
+      }
+      updateTotal();
+    });
+
+    document.getElementById('checkout').addEventListener('click', () => {
+      alert('Checkout flow not implemented yet. You will integrate Stripe or PayPal here.');
+      // Here you will redirect to your payment page or open payment modal
+    });
+
+    renderCart();
+  </script>
+
 </body>
 </html>
