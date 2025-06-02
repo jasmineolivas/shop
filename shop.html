@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
+
   <title>Shop</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
@@ -31,27 +33,63 @@
       text-decoration: none;
       font-weight: bold;
     }
-    .hero-book {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
-      background-color: #f8f3ef;
-    }
-    .hero-book img {
-      max-width: 200px;
-      height: auto;
-      margin-bottom: 1rem;
-    }
-    .hero-book button {
-      background-color: #D98F59;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 0.5rem;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
+
+.hero-book {
+  background-color: #171516;
+  color: #f1e2bb;
+  padding: 3rem 1rem;
+}
+
+.hero-book-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.hero-book img {
+  width: 200px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.book-info {
+  max-width: 500px;
+  text-align: left;
+  font-family: sans-serif;
+}
+
+.book-info h1 {
+  font-family: 'Cinzel', serif;
+  margin-bottom: 0.25rem;
+}
+
+.book-info h3 {
+  font-weight: normal;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.book-info p {
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.book-info button {
+  background-color: #D98F59;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -122,10 +160,18 @@
     </nav>
   </header>
 
-  <section class="hero-book">
-    <img src="images/booktitle.jpg" alt="My Book Title" />
-    <button onclick="location.href='booktitle.html'">View Book</button>
-  </section>
+<section class="hero-book">
+  <div class="hero-book-inner">
+    <img src="images/booktitle.jpg" alt="Book Cover" />
+    <div class="book-info">
+      <h1>My Book Title</h1>
+      <h3>by Your Name</h3>
+      <p>A haunting journey through magic, memory, and war — perfect for fans of lyrical fantasy and quiet power.</p>
+      <button onclick="location.href='booktitle.html'">Preorder Now</button>
+    </div>
+  </div>
+</section>
+
 
   <section class="product-grid">
     <div class="product-item">
