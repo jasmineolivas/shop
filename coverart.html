@@ -206,6 +206,21 @@ function renderCartControls() {
   const id = `coverart-${selectedSize}`;
   quantity = cart[id] || 0;
 
+  const container = document.getElementById('cart-controls-wrapper');
+  if (quantity === 0) {
+    container.innerHTML = `<div class="cart-controls"><button onclick="addToCart()">Add to Cart</button></div>`;
+  } else {
+    container.innerHTML = `
+      <div class="cart-controls">
+        <button onclick="decreaseQty()">-</button>
+        <span>${quantity} in cart</span>
+        <button onclick="increaseQty()">+</button>
+      </div>
+    `;
+  }
+}
+
+
   const container = document.getElementById('cart-controls');
   if (quantity === 0) {
     container.innerHTML = `<button onclick="addToCart()">Add to Cart</button>`;
