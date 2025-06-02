@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cover Art – Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="product-page">
+    <img src="images/owl-moon.jpg" alt="Cover Art" class="product-image" />
+
+    <div class="product-info">
+      <h1>Cover Art</h1>
+      <p class="price">$15.00</p>
+      <p class="description">
+        8x10" black and white print on textured cardstock. Inspired by [your theme].
+      </p>
+
+      <div class="cart-controls" data-product-id="owl-moon">
+        <button class="add-button">Add to cart</button>
+        <div class="quantity-controls hidden">
+          <button class="decrease">−</button>
+          <span class="quantity">1 in cart</span>
+          <button class="increase">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="cart.js"></script>
+</body>
+</html>
