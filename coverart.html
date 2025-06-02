@@ -186,11 +186,14 @@
   <script>
     let selectedSize = '6x9';
 
-    function selectSize(size) {
-      selectedSize = size;
-      document.getElementById('price').textContent = size === '8.5x11' ? '$17' : '$15';
-      renderCartControls();
-    }
+function selectSize(size) {
+  selectedSize = size;
+  localStorage.setItem('selectedSize', selectedSize);
+  const priceElement = document.getElementById('price');
+  priceElement.textContent = size === '8.5x11' ? '$17' : '$15';
+  renderCartControls(); // re-render with correct size
+}
+
 
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || {};
@@ -198,19 +201,23 @@
       document.getElementById('cart-count').textContent = count > 0 ? `(${count})` : '';
     }
 
-    function renderCartControls() {
-      const wrapper = document.getElementById('cart-controls-wrapper');
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const id = `coverart-${selectedSize}`;
-      const qty = cart[id] || 0;
-      wrapper.innerHTML = qty > 0 ? `
-        <div class="cart-controls">
-          <button onclick="decreaseQty()">-</button>
-          <span>${qty} in cart</span>
-          <button onclick="increaseQty()">+</button>
-        </div>
-      ` : `<div class="cart-controls"><button onclick="addToCart()">Add to Cart</button></div>`;
-    }
+function renderCartControls() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const id = `coverart-${selectedSize}`;
+  quantity = cart[id] || 0;
+
+  const container = document.getElementById('cart-controls');
+  if (quantity === 0) {
+    container.innerHTML = `<button onclick="addToCart()">Add to Cart</button>`;
+  } else {
+    container.innerHTML = `
+      <button onclick="decreaseQty()">-</button>
+      <span>${quantity} in cart</span>
+      <button onclick="increaseQty()">+</button>
+    `;
+  }
+}
+
 
     function addToCart() {
       const cart = JSON.parse(localStorage.getItem('cart')) || {};
@@ -248,10 +255,12 @@
       document.body.appendChild(overlay);
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      updateCartCount();
-      renderCartControls();
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  selectedSize = localStorage.getItem('selectedSize') || '6x9';
+  selectSize(selectedSize); // also sets price + rerenders controls
+  updateCartCount();
+});
+
   </script>
 </body>
 </html>
