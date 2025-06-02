@@ -280,41 +280,10 @@
   <footer>
     &copy; 2025 Jasmine Olivas — All Rights Reserved
   </footer>
-  
-  <script>
-  document.querySelectorAll('.cart-controls').forEach(control => {
-    const addButton = control.querySelector('.add-button');
-    const quantityControls = control.querySelector('.quantity-controls');
-    const quantityText = quantityControls.querySelector('.quantity');
-    let quantity = 1;
-
-    addButton.addEventListener('click', () => {
-      addButton.classList.add('hidden');
-      quantityControls.classList.remove('hidden');
-      quantity = 1;
-      quantityText.textContent = `${quantity} in cart`;
-    });
-
-    quantityControls.querySelector('.increase').addEventListener('click', () => {
-      quantity++;
-      quantityText.textContent = `${quantity} in cart`;
-    });
-
-    quantityControls.querySelector('.decrease').addEventListener('click', () => {
-      quantity--;
-      if (quantity <= 0) {
-        quantity = 0;
-        quantityControls.classList.add('hidden');
-        addButton.classList.remove('hidden');
-      } else {
-        quantityText.textContent = `${quantity} in cart`;
-      }
-    });
-  });
-</script>
 
 
 <script>
+document.addEventListener('DOMContentLoaded', () => {
   function updateCartBadge() {
     const cart = JSON.parse(localStorage.getItem('cart')) || {};
     const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
@@ -374,24 +343,10 @@
     });
   });
 
-  // Initialize cart badge on load
   updateCartBadge();
+});
 </script>
 
-<!-- existing scripts -->
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    function updateCartBadge() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-      const badge = document.querySelector('#cart-count');
-      if (badge) badge.textContent = totalItems;
-    }
-
-    updateCartBadge();
-  });
-</script>
 
 </body>
 </html>
