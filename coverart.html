@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cover Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
       font-family: sans-serif;
@@ -18,9 +18,8 @@
       color: white;
       padding: 1rem;
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
+      align-items: center;
     }
     nav {
       display: flex;
@@ -28,18 +27,14 @@
       align-items: center;
       padding: 0 2rem;
       max-width: 1000px;
-      margin: 0 auto;
+      width: 100%;
     }
     .nav-center {
       display: flex;
       gap: 2rem;
-      justify-content: center;
-      flex-grow: 1;
-      text-align: center;
     }
     .nav-cart {
       margin-left: auto;
-      padding-left: 2rem;
     }
     nav a {
       color: #f1e9e3;
@@ -48,216 +43,228 @@
       font-size: 1rem;
     }
     .product-container {
-      display: flex;
-      flex-direction: row;
-      gap: 2rem;
       max-width: 1000px;
       margin: 2rem auto;
-      padding: 0 1rem;
+      padding: 1rem;
+      display: flex;
       flex-wrap: wrap;
-      align-items: flex-start;
+      gap: 2rem;
     }
     .product-image {
-      width: 325px;
+      flex: 1 1 325px;
       cursor: zoom-in;
     }
+    .product-image img {
+      width: 325px;
+      height: auto;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
     .product-details {
-      max-width: 600px;
+      flex: 2 1 400px;
     }
     .product-details h1 {
       font-family: 'Cinzel', serif;
       margin-bottom: 0.5rem;
     }
-    .product-price {
+    .product-details .price {
       font-size: 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .product-description {
-      line-height: 1.5;
+      font-weight: bold;
       margin-bottom: 1rem;
     }
     .size-buttons button {
-      background: #f1e9e3;
-      border: none;
+      background-color: transparent;
+      border: 1px solid #D98F59;
+      color: #D98F59;
       padding: 0.5rem 1rem;
       margin-right: 1rem;
-      font-size: 1rem;
       cursor: pointer;
+      border-radius: 0.5rem;
+    }
+    .size-buttons button.active {
+      background-color: #D98F59;
+      color: white;
     }
     .cart-controls {
-      margin-top: 1rem;
-    }
-    .cart-controls button {
       background-color: #D98F59;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin: 0 0.25rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 0.25rem;
-    }
-    .cart-controls span {
-      background-color: #D98F59;
-      padding: 0.5rem 1rem;
-      color: white;
-      border-radius: 0.25rem;
-    }
-    .zoom-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
       display: flex;
       align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      color: white;
+      margin-top: 1rem;
+      max-width: 200px;
+    }
+    .cart-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+    .zoom-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
       justify-content: center;
-      z-index: 1000;
+      align-items: center;
+      z-index: 999;
     }
     .zoom-overlay img {
       max-width: 90%;
       max-height: 90%;
+    }
+    .zoom-overlay span {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      color: white;
+      font-size: 2rem;
       cursor: zoom-out;
     }
     .policies {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-wrap: wrap;
       gap: 2rem;
+      margin: 3rem auto;
       max-width: 1000px;
-      margin: 2rem auto;
       padding: 0 1rem;
+    }
+    .policies div {
+      flex: 1;
     }
     .policies h2 {
       font-family: 'Cinzel', serif;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       margin-bottom: 0.5rem;
     }
-    @media (max-width: 700px) {
-      .product-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .policies {
-        grid-template-columns: 1fr;
-      }
+    .policies p {
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
-<header>
-  <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="max-width: 100%; height: auto;">
-  <nav>
-    <div class="nav-center">
-      <a href="shop.html">All Products</a>
-      <a href="about.html">About Me</a>
-    </div>
-    <div class="nav-cart">
-      <a href="cart.html" class="cart-link">Cart<span id="cart-count"></span></a>
-    </div>
-  </nav>
-</header>
+  <header>
+    <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="max-width: 100%; height: auto;">
+    <nav>
+      <div class="nav-center">
+        <a href="shop.html">All Products</a>
+        <a href="about.html">About Me</a>
+      </div>
+      <div class="nav-cart">
+        <a href="cart.html">Cart<span id="cart-count"></span></a>
+      </div>
+    </nav>
+  </header>
 
-<section class="product-container">
-  <img class="product-image" src="images/coverart.jpg" alt="Cover Art" id="mainImage" />
-  <div class="product-details">
-    <h1>Cover Art</h1>
-    <div class="product-price" id="price">$15</div>
-    <div class="product-description">
-      This is where the description of the print will go. High quality print from the illustrated book. Printed on blabla paper, super cool drawing, etc. "Caption from the book where the illustration is found."
+  <main class="product-container">
+    <div class="product-image" onclick="openZoom()">
+      <img src="images/coverart.jpg" alt="Cover Art">
     </div>
-    <div class="size-buttons">
-      <button onclick="setSize('6x9')">6x9</button>
-      <button onclick="setSize('8.5x11')">8.5x11</button>
+    <div class="product-details">
+      <h1>Cover Art</h1>
+      <div class="price" id="price">$15</div>
+      <p>This is where the description of the print will go. High quality print from the illustrated book. Printed on blabla paper, super cool drawing, etc. "Caption from the book where the illustration is found"</p>
+      <div class="size-buttons">
+        <button onclick="setSize('6x9', 15)" class="active">6x9</button>
+        <button onclick="setSize('8.5x11', 17)">8.5x11</button>
+      </div>
+      <div id="cart-action"></div>
     </div>
-    <div class="cart-controls" id="cartControls">
-      <button onclick="addToCart()">Add to Cart</button>
+  </main>
+
+  <div class="policies">
+    <div>
+      <h2>Shipping Policy</h2>
+      <p>Please allow 5-7 business days for production of your fine art print. Orders typically arrive in 5-7 business days after they have been shipped. All prints are printed in the United States and shipped in a sturdy mailer via USPS.</p>
+    </div>
+    <div>
+      <h2>Return Policy</h2>
+      <p>All sales are final, however, if there are any concerns with your order please contact the shop within 48 hours of receiving your goods so we can find a solution.</p>
     </div>
   </div>
-</section>
 
-<section class="policies">
-  <div>
-    <h2>Shipping Policy</h2>
-    <p>Please allow 5-7 business days for production of your fine art print. Orders typically arrive in 5-7 business days after they have been shipped. All prints are printed in the United States and shipped in a sturdy mailer via USPS.</p>
+  <div class="zoom-overlay" id="zoom">
+    <span onclick="closeZoom()">&minus;</span>
+    <img src="images/coverart.jpg" alt="Zoomed Cover Art">
   </div>
-  <div>
-    <h2>Return Policy</h2>
-    <p>All sales are final, however, if there are any concerns with your order please contact the shop within 48 hours of receiving your goods so we can find a solution.</p>
-  </div>
-</section>
 
-<script>
-  const productId = 'coverart';
-  let currentSize = '6x9';
-  const prices = { '6x9': 15, '8.5x11': 17 };
-  let cart = JSON.parse(localStorage.getItem('cart')) || {};
+  <script>
+    let size = '6x9';
+    let price = 15;
 
-  function updatePrice() {
-    document.getElementById('price').textContent = `$${prices[currentSize]}`;
-  }
-
-  function setSize(size) {
-    currentSize = size;
-    updatePrice();
-  }
-
-  function addToCart() {
-    const key = `${productId}-${currentSize}`;
-    cart[key] = (cart[key] || 0) + 1;
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCartControls();
-  }
-
-  function updateQty(amount) {
-    const key = `${productId}-${currentSize}`;
-    cart[key] = Math.max(0, (cart[key] || 0) + amount);
-    if (cart[key] === 0) delete cart[key];
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCartControls();
-  }
-
-  function renderCartControls() {
-    const key = `${productId}-${currentSize}`;
-    const container = document.getElementById('cartControls');
-    if (cart[key]) {
-      container.innerHTML = `
-        <button onclick="updateQty(-1)">-</button>
-        <span>${cart[key]} in cart</span>
-        <button onclick="updateQty(1)">+</button>
-      `;
-    } else {
-      container.innerHTML = `<button onclick="addToCart()">Add to Cart</button>`;
+    function setSize(newSize, newPrice) {
+      size = newSize;
+      price = newPrice;
+      document.getElementById('price').textContent = `$${newPrice}`;
+      document.querySelectorAll('.size-buttons button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
     }
-  }
 
-  function renderCartBadge() {
-    const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-    const badge = document.querySelector('#cart-count');
-    if (badge && count > 0) {
-      badge.style.display = 'inline-block';
-      badge.style.background = 'orange';
-      badge.style.width = '0.75rem';
-      badge.style.height = '0.75rem';
-      badge.style.borderRadius = '50%';
-      badge.style.marginLeft = '0.5rem';
-      badge.textContent = '';
-    } else if (badge) {
-      badge.style.display = 'none';
+    const cartAction = document.getElementById('cart-action');
+    const cartKey = `coverart-${size}`;
+
+    function updateCartDisplay() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const qty = cart[cartKey] || 0;
+      if (qty > 0) {
+        cartAction.innerHTML = `
+          <div class="cart-controls">
+            <button onclick="changeQty(-1)">-</button>
+            <span>${qty} in cart</span>
+            <button onclick="changeQty(1)">+</button>
+          </div>
+        `;
+      } else {
+        cartAction.innerHTML = `<button style="background:#D98F59;color:white;padding:0.75rem 1.5rem;border:none;border-radius:0.5rem;cursor:pointer;" onclick="addToCart()">Add to Cart</button>`;
+      }
     }
-  }
 
-  renderCartControls();
-  renderCartBadge();
-  updatePrice();
+    function addToCart() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const key = `coverart-${size}`;
+      cart[key] = (cart[key] || 0) + 1;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+      updateCartCount();
+    }
 
-  document.getElementById('mainImage').addEventListener('click', () => {
-    const overlay = document.createElement('div');
-    overlay.className = 'zoom-overlay';
-    overlay.innerHTML = `<img src="images/coverart.jpg" alt="Zoomed Cover Art">`;
-    overlay.addEventListener('click', () => document.body.removeChild(overlay));
-    document.body.appendChild(overlay);
-  });
-</script>
+    function changeQty(delta) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const key = `coverart-${size}`;
+      if (!cart[key]) return;
+      cart[key] += delta;
+      if (cart[key] <= 0) delete cart[key];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const count = Object.values(cart).reduce((a, b) => a + b, 0);
+      const badge = document.getElementById('cart-count');
+      if (badge) {
+        badge.textContent = count > 0 ? `(${count})` : '';
+      }
+    }
+
+    function openZoom() {
+      document.getElementById('zoom').style.display = 'flex';
+    }
+
+    function closeZoom() {
+      document.getElementById('zoom').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartDisplay();
+      updateCartCount();
+    });
+  </script>
 </body>
 </html>
