@@ -221,18 +221,6 @@ function renderCartControls() {
 }
 
 
-  const container = document.getElementById('cart-controls');
-  if (quantity === 0) {
-    container.innerHTML = `<button onclick="addToCart()">Add to Cart</button>`;
-  } else {
-    container.innerHTML = `
-      <button onclick="decreaseQty()">-</button>
-      <span>${quantity} in cart</span>
-      <button onclick="increaseQty()">+</button>
-    `;
-  }
-}
-
 
     function addToCart() {
       const cart = JSON.parse(localStorage.getItem('cart')) || {};
