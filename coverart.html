@@ -3,86 +3,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Illustration Title</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet" />
+  <title>Cover Art</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background-color: #fff;
+      color: #171516;
+    }
+    header {
+      background-color: #171516;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .nav-cart {
+      margin-left: auto;
+      padding-left: 2rem;
+    }
+    nav a {
+      color: #f1e9e3;
+      text-decoration: none;
+      font-weight: normal;
+      font-size: 1rem;
+    }
+    .product-container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-start;
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+      gap: 2rem;
+    }
+    .product-image img {
+      width: 325px;
+      cursor: zoom-in;
+    }
+    .product-details {
+      flex-grow: 1;
+      max-width: 600px;
+    }
+    .product-details h1 {
+      font-family: 'Cinzel', serif;
+      margin-top: 0;
+    }
+    .price-options {
+      margin: 1rem 0;
+    }
+    .price-options button {
+      background: #eee;
+      border: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      cursor: pointer;
+    }
+    .price-display {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+    .add-to-cart {
+      background-color: #D98F59;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+    }
+    .description {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <!-- Banner -->
   <header>
-    <img src="images/githubwebsitebanner02.jpg" alt="Banner" class="banner" />
+    <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="max-width: 100%; height: auto;">
+    <nav>
+      <div class="nav-center">
+        <a href="shop.html">All Products</a>
+        <a href="about.html">About Me</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </nav>
   </header>
 
-  <!-- Navigation -->
-  <nav>
-    <div class="nav-links">
-      <a href="shop.html">All Products</a>
-      <a href="about.html">About Me</a>
-      <a href="cart.html">Cart (0)</a>
+  <main>
+    <div class="product-container">
+      <div class="product-image">
+        <a href="images/coverart.jpg" target="_blank">
+          <img src="images/coverart.jpg" alt="Cover Art">
+        </a>
+      </div>
+      <div class="product-details">
+        <h1>Cover Art</h1>
+        <div class="price-options">
+          <button onclick="updatePrice(15)">6x9 Print</button>
+          <button onclick="updatePrice(17)">8.5x11 Print</button>
+        </div>
+        <div class="price-display" id="priceDisplay">$15</div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
     </div>
-  </nav>
 
-  <!-- Main Product Section -->
-  <main class="product-page">
-    <div class="product-left">
-      <img src="images/illustration01.jpg" alt="Illustration" class="main-product-image" onclick="enlargeImage(this)" />
-    </div>
-    <div class="product-right">
-      <h1 class="product-title">Illustration Title</h1>
-      <div class="size-selector">
-        <label>
-          <input type="radio" name="size" value="15" checked onchange="updatePrice(this)"> 6x9 Print ($15)
-        </label><br />
-        <label>
-          <input type="radio" name="size" value="17" onchange="updatePrice(this)"> 8.5x11 Print ($17)
-        </label>
-      </div>
-      <div class="add-to-cart">
-        <button onclick="changeQuantity(-1)">-</button>
-        <span id="quantity">1</span>
-        <button onclick="changeQuantity(1)">+</button>
-        <button class="cart-button" onclick="addToCart()">Add to Cart - $<span id="price">15</span></button>
-      </div>
+    <div class="description">
+      <p>This illustration is printed on high-quality matte paper and ships flat. Shipping included for standard U.S. orders. For bulk or international orders, shipping may vary.</p>
     </div>
   </main>
 
-  <!-- Description Section -->
-  <section class="description">
-    <p>This is where the description of the print will go. You can write about the art, the inspiration, or the printing details here.</p>
-  </section>
-
-  <!-- Image Modal -->
-  <div id="imageModal" class="modal" onclick="closeModal()">
-    <img class="modal-content" id="modalImg" />
-  </div>
-
   <script>
-    function changeQuantity(amount) {
-      const qty = document.getElementById("quantity");
-      let current = parseInt(qty.textContent);
-      current = Math.max(1, current + amount);
-      qty.textContent = current;
-    }
-
-    function updatePrice(radio) {
-      const priceDisplay = document.getElementById("price");
-      priceDisplay.textContent = radio.value;
-    }
-
-    function addToCart() {
-      // You can wire this up with your cart logic later.
-      alert("Added to cart!");
-    }
-
-    function enlargeImage(img) {
-      const modal = document.getElementById("imageModal");
-      const modalImg = document.getElementById("modalImg");
-      modal.style.display = "block";
-      modalImg.src = img.src;
-    }
-
-    function closeModal() {
-      document.getElementById("imageModal").style.display = "none";
+    function updatePrice(price) {
+      document.getElementById('priceDisplay').textContent = `$${price}`;
     }
   </script>
 </body>
