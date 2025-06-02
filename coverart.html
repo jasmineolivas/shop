@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
   <title>Cover Art</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       font-family: sans-serif;
@@ -47,55 +47,57 @@
       font-weight: normal;
       font-size: 1rem;
     }
-    .product-container {
+    .product-page {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 2rem;
       display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: flex-start;
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 1rem;
       gap: 2rem;
+      align-items: flex-start;
     }
-    .product-image img {
-      width: 325px;
+    .product-image {
       cursor: zoom-in;
+      width: 325px;
     }
-    .product-details {
-      flex-grow: 1;
-      max-width: 600px;
+    .product-info {
+      flex: 1;
     }
-    .product-details h1 {
+    .product-info h1 {
       font-family: 'Cinzel', serif;
-      margin-top: 0;
+      margin-bottom: 0.5rem;
     }
-    .price-options {
+    .product-info p {
+      line-height: 1.5;
+    }
+    .price {
       margin: 1rem 0;
     }
-    .price-options button {
-      background: #eee;
-      border: 1px solid #ccc;
-      padding: 0.5rem 1rem;
-      margin-right: 1rem;
-      cursor: pointer;
-    }
-    .price-display {
-      font-size: 1.2rem;
-      margin: 1rem 0;
-    }
-    .add-to-cart {
+    .button-group button {
       background-color: #D98F59;
-      border: none;
-      padding: 0.75rem 1.5rem;
       color: white;
-      font-size: 1rem;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border-radius: 8px;
       cursor: pointer;
-      border-radius: 0.5rem;
+      font-size: 1rem;
     }
-    .description {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 1rem;
+    .zoom-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .zoom-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      cursor: zoom-out;
     }
   </style>
 </head>
@@ -111,33 +113,95 @@
     </nav>
   </header>
 
-  <main>
-    <div class="product-container">
-      <div class="product-image">
-        <a href="images/coverart.jpg" target="_blank">
-          <img src="images/coverart.jpg" alt="Cover Art">
-        </a>
+  <main class="product-page">
+    <img id="main-image" src="images/coverart.jpg" alt="Cover Art" class="product-image" onclick="zoomImage()">
+    <div class="product-info">
+      <h1>Cover Art</h1>
+      <div>
+        <label><input type="radio" name="size" value="15" checked onchange="updatePrice()"> 6x9 Print ($15)</label><br>
+        <label><input type="radio" name="size" value="17" onchange="updatePrice()"> 8.5x11 Print ($17)</label>
       </div>
-      <div class="product-details">
-        <h1>Cover Art</h1>
-        <div class="price-options">
-          <button onclick="updatePrice(15)">6x9 Print</button>
-          <button onclick="updatePrice(17)">8.5x11 Print</button>
-        </div>
-        <div class="price-display" id="priceDisplay">$15</div>
-        <button class="add-to-cart">Add to Cart</button>
+      <div class="price" id="price">$15</div>
+      <div class="button-group" id="cart-buttons">
+        <button onclick="addToCart()">Add to Cart</button>
       </div>
-    </div>
-
-    <div class="description">
-      <p>This illustration is printed on high-quality matte paper and ships flat. Shipping included for standard U.S. orders. For bulk or international orders, shipping may vary.</p>
+      <p style="margin-top: 1.5rem">High quality print from the illustrated book. Shipping included for most orders.</p>
     </div>
   </main>
 
+  <div id="zoomContainer" class="zoom-overlay" style="display: none;" onclick="closeZoom()">
+    <img src="images/coverart.jpg" alt="Zoomed Cover Art">
+  </div>
+
   <script>
-    function updatePrice(price) {
-      document.getElementById('priceDisplay').textContent = `$${price}`;
+    let quantity = 0;
+    const productId = 'coverart';
+
+    function updatePrice() {
+      const value = document.querySelector('input[name="size"]:checked').value;
+      document.getElementById('price').innerText = `$${value}`;
+      if (quantity > 0) updateCartDisplay();
     }
+
+    function addToCart() {
+      quantity = 1;
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      cart[productId] = quantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    }
+
+    function incrementCart() {
+      quantity++;
+      updateStorage();
+    }
+
+    function decrementCart() {
+      quantity--;
+      if (quantity <= 0) {
+        quantity = 0;
+        const cart = JSON.parse(localStorage.getItem('cart')) || {};
+        delete cart[productId];
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart-buttons').innerHTML = '<button onclick="addToCart()">Add to Cart</button>';
+        return;
+      }
+      updateStorage();
+    }
+
+    function updateStorage() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      cart[productId] = quantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      const selectedPrice = document.querySelector('input[name="size"]:checked').value;
+      document.getElementById('price').innerText = `$${selectedPrice}`;
+      document.getElementById('cart-buttons').innerHTML = `
+        <button onclick="decrementCart()">-</button>
+        <span style="padding: 0.5rem 1rem">${quantity} in cart</span>
+        <button onclick="incrementCart()">+</button>
+      `;
+    }
+
+    function zoomImage() {
+      document.getElementById('zoomContainer').style.display = 'flex';
+    }
+
+    function closeZoom() {
+      document.getElementById('zoomContainer').style.display = 'none';
+    }
+
+    // Load existing cart quantity if already added
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      if (cart[productId]) {
+        quantity = cart[productId];
+        updateCartDisplay();
+      }
+    });
   </script>
 </body>
 </html>
