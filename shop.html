@@ -23,16 +23,33 @@
       align-items: center;
       flex-direction: column;
     }
-    nav {
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
   margin-top: 0.5rem;
-  text-align: center;
 }
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
+
+.nav-center {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex: 1;
+}
+
+.nav-cart {
+  position: absolute;
+  right: 250px;
+}
+
+nav a {
+  color: #f1e9e3;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
 
 .hero-book {
@@ -169,11 +186,16 @@
 <body>
   <header>
     <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="max-width: 100%; height: auto;">
-    <nav>
-      <a href="shop.html">All Products</a>
-      <a href="about.html">About Me</a>
-      <a href="cart.html" class="cart-link">🛒 <span id="cart-count"></span></a>
-    </nav>
+<nav>
+  <div class="nav-center">
+    <a href="shop.html">All Products</a>
+    <a href="about.html">About Me</a>
+  </div>
+  <div class="nav-cart">
+    <a href="cart.html" class="cart-link">🛒 <span id="cart-count"></span></a>
+  </div>
+</nav>
+
   </header>
 
 <section class="hero-book">
