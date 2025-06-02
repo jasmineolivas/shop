@@ -205,5 +205,75 @@
   });
 </script>
 
+<script>
+  // CART STORAGE AND SYNC
+  const cartKey = 'customShopCart';
+
+  function loadCart() {
+    return JSON.parse(localStorage.getItem(cartKey)) || {};
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    updateCartCountDisplay(cart);
+  }
+
+  function updateCartCountDisplay(cart) {
+    const total = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+    const cartBtn = document.querySelector('.cart-button');
+    if (cartBtn) {
+      cartBtn.innerHTML = `🛒 Cart${total > 0 ? ' (' + total + ')' : ''}`;
+    }
+  }
+
+  // SETUP ON PAGE LOAD
+  document.addEventListener('DOMContentLoaded', () => {
+    const cart = loadCart();
+    updateCartCountDisplay(cart);
+
+    document.querySelectorAll('.cart-controls').forEach(control => {
+      const productId = control.dataset.productId;
+      const addButton = control.querySelector('.add-button');
+      const quantityControls = control.querySelector('.quantity-controls');
+      const quantityDisplay = control.querySelector('.quantity');
+
+      let count = cart[productId] || 0;
+
+      function render() {
+        if (count > 0) {
+          addButton.classList.add('hidden');
+          quantityControls.classList.remove('hidden');
+          quantityDisplay.textContent = `${count} in cart`;
+        } else {
+          addButton.classList.remove('hidden');
+          quantityControls.classList.add('hidden');
+        }
+        cart[productId] = count;
+        if (count === 0) delete cart[productId];
+        saveCart(cart);
+      }
+
+      addButton.addEventListener('click', () => {
+        count = 1;
+        render();
+      });
+
+      quantityControls.querySelector('.increase').addEventListener('click', () => {
+        count++;
+        render();
+      });
+
+      quantityControls.querySelector('.decrease').addEventListener('click', () => {
+        count--;
+        if (count < 0) count = 0;
+        render();
+      });
+
+      render(); // initialize on load
+    });
+  });
+</script>
+
+  
 </body>
 </html>
