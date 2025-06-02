@@ -94,13 +94,18 @@
 }
 
 .gallery-item h2 {
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
 }
 
 .gallery-item p {
-  margin-top: 0;
-  font-weight: bold;
+  margin-top: 0.1rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: inherit;
+  font-weight: normal;
 }
+
 
 .featured-book {
   text-align: center;
@@ -174,8 +179,17 @@
   <img src="https://via.placeholder.com/300x450?text=Book+Cover" alt="Book Title" />
   <h1>The Book Title</h1>
   <p>“A haunting and beautiful debut fantasy novel.”</p>
-  <button class="add-button">Add to Cart</button>
+
+  <div class="cart-controls" data-product-id="book1">
+    <button class="add-button">Add to cart</button>
+    <div class="quantity-controls hidden">
+      <button class="decrease">−</button>
+      <span class="quantity">1 in cart</span>
+      <button class="increase">+</button>
+    </div>
+  </div>
 </section>
+
 
   
 <section class="gallery">
@@ -248,6 +262,7 @@
   <footer>
     &copy; 2025 Jasmine Olivas — All Rights Reserved
   </footer>
+  
   <script>
   document.querySelectorAll('.cart-controls').forEach(control => {
     const addButton = control.querySelector('.add-button');
