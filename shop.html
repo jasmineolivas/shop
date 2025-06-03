@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
-
-  <title>Shop</title>
+  <title>Author | Jasmine Olivas</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
+      padding: 0;
       background-color: #fff;
       color: #171516;
     }
@@ -23,34 +23,31 @@
       align-items: center;
       flex-direction: column;
     }
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem; /* creates space on both ends */
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.nav-center {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  flex-grow: 1;
-  text-align: center;
-}
-
-.nav-cart {
-  margin-left: auto;
-  padding-left: 2rem; /* adjusts how far from center it's pushed */
-}
-
-nav a {
-  color: #f1e9e3;
-  text-decoration: none;
-  font-weight: normal;
-  font-size: 1rem;
-}
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .nav-cart {
+      margin-left: auto;
+      padding-left: 2rem;
+    }
+    nav a {
+      color: #f1e9e3;
+      text-decoration: none;
+      font-weight: normal;
+      font-size: 1rem;
+    }
 
 
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
@@ -125,9 +122,10 @@ nav a {
 
 @media (max-width: 500px) {
   .product-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
+
 
 
 .product-item {
