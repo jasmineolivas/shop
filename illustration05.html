@@ -227,11 +227,24 @@ document.querySelectorAll('.size-buttons button').forEach(btn => {
 }
 
 
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-      document.getElementById('cart-count').textContent = count > 0 ? `(${count})` : '';
-    }
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  const badge = document.getElementById('cart-count');
+
+  if (count > 0) {
+    badge.style.display = 'inline-block';
+    badge.style.background = '#D98F59'; // Use your exact orange
+    badge.style.width = '0.75rem';
+    badge.style.height = '0.75rem';
+    badge.style.borderRadius = '50%';
+    badge.style.marginLeft = '0.5rem';
+    badge.textContent = '';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
 
 function renderCartControls() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
@@ -289,6 +302,12 @@ function renderCartControls() {
       overlay.onclick = () => document.body.removeChild(overlay);
       document.body.appendChild(overlay);
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+  renderCart();
+  updateCartCount();
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
   selectedSize = localStorage.getItem('selectedSize') || '6x9';
