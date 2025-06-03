@@ -70,7 +70,24 @@
 <p>
   Here is where these words will show up.
 </p>
-
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+      const badge = document.querySelector('#cart-count');
+      if (badge && count > 0) {
+        badge.style.display = 'inline-block';
+        badge.style.background = 'orange';
+        badge.style.width = '0.75rem';
+        badge.style.height = '0.75rem';
+        badge.style.borderRadius = '50%';
+        badge.style.marginLeft = '0.5rem';
+        badge.textContent = '';
+      } else if (badge) {
+        badge.style.display = 'none';
+      }
+    });
+  </script>
 
 </body>
 </html>
