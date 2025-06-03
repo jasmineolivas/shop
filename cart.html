@@ -1,195 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Cart</title>
-  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-      color: #171516;
-    }
-    header {
-      background-color: #171516;
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    .nav-center {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      flex-grow: 1;
-      text-align: center;
-    }
-    .nav-cart {
-      margin-left: auto;
-      padding-left: 2rem;
-    }
-    nav a {
-      color: #f1e9e3;
-      text-decoration: none;
-      font-weight: normal;
-      font-size: 1rem;
-    }
-    .cart-container {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .cart-item {
-      display: flex;
-      gap: 1rem;
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 0;
-      align-items: center;
-    }
-    .cart-item img {
-      width: 100px;
-      border-radius: 0.5rem;
-    }
-    .item-details {
-      flex-grow: 1;
-    }
-    .item-controls button {
-      margin: 0 0.25rem;
-      background-color: #D98F59;
-      border: none;
-      color: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      cursor: pointer;
-    }
-    .total {
-      text-align: right;
-      font-size: 1.2rem;
-      margin-top: 2rem;
-    }
-    .checkout-btn {
-      display: block;
-      margin: 2rem 0 0 auto;
-      background-color: #D98F59;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
+    .quantity-btn {
+      @apply px-2 py-1 border border-gray-300 hover:bg-gray-100;
     }
   </style>
 </head>
-<body>
-  <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="width: 100%; display: block;">
-  <header>
-    <nav>
-      <div class="nav-center">
-        <a href="shop.html">All Products</a>
-        <a href="about.html">About Me</a>
+<body class="bg-[#fdf9f5] text-gray-800">
+  <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" class="w-full block">
+  <header class="bg-[#171516] text-white py-4">
+    <nav class="flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-4">
+      <div class="flex gap-6 justify-center md:justify-start">
+        <a href="shop.html" class="text-[#f1e9e3] hover:underline">All Products</a>
+        <a href="about.html" class="text-[#f1e9e3] hover:underline">About Me</a>
       </div>
-      <div class="nav-cart">
-        <a href="cart.html" class="cart-link">Cart<span id="cart-count"></span></a>
+      <div class="relative mt-2 md:mt-0">
+        <a href="cart.html" class="text-[#f1e9e3]">Cart<span id="cart-count"></span></a>
       </div>
     </nav>
   </header>
-  
-  <section class="cart-container" id="cart-container">
-    <!-- Cart items will be rendered here -->
-  </section>
-  <script>
-    const productData = {
-      'coverart-6x9': {
-        name: 'Cover Art (6x9)',
-        price: 15,
-        image: 'images/coverart.jpg'
-      },
-      'coverart-8.5x11': {
-        name: 'Cover Art (8.5x11)',
-        price: 17,
-        image: 'images/coverart.jpg'
-      },
-        'illustration01-6x9': {
-        name: 'Illustration 01 (6x9)',
-        price: 15,
-        image: 'images/illustration01.jpg'
-      },
-      'illustration01-8.5x11': {
-        name: 'Illustration 01 (8.5x11)',
-        price: 17,
-        image: 'images/illustration01.jpg'
-      },
-      'illustration02-6x9': {
-        name: 'Illustration 02 (6x9)',
-        price: 15,
-        image: 'images/illustration02.jpg'
-      },
-      'illustration02-8.5x11': {
-        name: 'Illustration 02 (8.5x11)',
-        price: 17,
-        image: 'images/illustration02.jpg'
-      },
-      'illustration03-6x9': {
-        name: 'Illustration 03 (6x9)',
-        price: 15,
-        image: 'images/illustration03.jpg'
-      },
-      'illustration03-8.5x11': {
-        name: 'Illustration 03 (8.5x11)',
-        price: 17,
-        image: 'images/illustration03.jpg'
-      },
-      'illustration04-6x9': {
-        name: 'Illustration 04 (6x9)',
-        price: 15,
-        image: 'images/illustration04.jpg'
-      },
-      'illustration04-8.5x11': {
-        name: 'Illustration 04 (8.5x11)',
-        price: 17,
-        image: 'images/illustration04.jpg'
-      },
-      'illustration05-6x9': {
-        name: 'Illustration 05 (6x9)',
-        price: 15,
-        image: 'images/illustration05.jpg'
-      },
-      'illustration05-8.5x11': {
-        name: 'Illustration 05 (8.5x11)',
-        price: 17,
-        image: 'images/illustration05.jpg'
-      },
-        'booktitle': {
-        name: 'Book Title',
-        price: 17,
-        image: 'images/booktitle.jpg'
-      }
 
-      // Add other products here later
-    };
+  <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <!-- Cart Items -->
+    <div class="lg:col-span-2 space-y-6">
+      <h2 class="text-2xl font-semibold mb-4">Your Cart</h2>
+      <div id="cart-container"></div>
+    </div>
+
+    <!-- Summary -->
+    <div class="bg-white p-6 shadow rounded-lg sticky top-10 h-fit">
+      <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
+      <div class="flex justify-between py-1">
+        <span>Subtotal</span><span id="summary-subtotal">$0.00</span>
+      </div>
+      <div class="flex justify-between py-1">
+        <span>Shipping</span><span>Calculated at checkout</span>
+      </div>
+      <div class="flex justify-between py-1">
+        <span>Tax</span><span>Calculated at checkout</span>
+      </div>
+      <div class="border-t mt-4 pt-4 flex justify-between font-bold text-lg">
+        <span>Total</span><span id="summary-total">$0.00</span>
+      </div>
+      <button class="w-full bg-black text-white mt-6 py-2 rounded hover:opacity-90">Checkout</button>
+    </div>
+  </div>
+
+<script>
+const productData = {
+  'coverart-6x9': { name: 'Cover Art (6x9)', price: 15, image: 'images/coverart.jpg' },
+  'coverart-8.5x11': { name: 'Cover Art (8.5x11)', price: 17, image: 'images/coverart.jpg' },
+  'illustration01-6x9': { name: 'Illustration 01 (6x9)', price: 15, image: 'images/illustration01.jpg' },
+  'illustration01-8.5x11': { name: 'Illustration 01 (8.5x11)', price: 17, image: 'images/illustration01.jpg' },
+  'illustration02-6x9': { name: 'Illustration 02 (6x9)', price: 15, image: 'images/illustration02.jpg' },
+  'illustration02-8.5x11': { name: 'Illustration 02 (8.5x11)', price: 17, image: 'images/illustration02.jpg' },
+  'illustration03-6x9': { name: 'Illustration 03 (6x9)', price: 15, image: 'images/illustration03.jpg' },
+  'illustration03-8.5x11': { name: 'Illustration 03 (8.5x11)', price: 17, image: 'images/illustration03.jpg' },
+  'illustration04-6x9': { name: 'Illustration 04 (6x9)', price: 15, image: 'images/illustration04.jpg' },
+  'illustration04-8.5x11': { name: 'Illustration 04 (8.5x11)', price: 17, image: 'images/illustration04.jpg' },
+  'illustration05-6x9': { name: 'Illustration 05 (6x9)', price: 15, image: 'images/illustration05.jpg' },
+  'illustration05-8.5x11': { name: 'Illustration 05 (8.5x11)', price: 17, image: 'images/illustration05.jpg' },
+  'booktitle': { name: 'Book Title', price: 17, image: 'images/booktitle.jpg' }
+};
 
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
   const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
   const badge = document.getElementById('cart-count');
-
   if (count > 0) {
     badge.style.display = 'inline-block';
-    badge.style.background = '#D98F59'; // Use your exact orange
+    badge.style.background = '#D98F59';
     badge.style.width = '0.75rem';
     badge.style.height = '0.75rem';
     badge.style.borderRadius = '50%';
@@ -200,61 +85,65 @@ function updateCartCount() {
   }
 }
 
+function renderCart() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const container = document.getElementById('cart-container');
+  container.innerHTML = '';
+  let subtotal = 0;
 
-    function renderCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const container = document.getElementById('cart-container');
-      container.innerHTML = '';
-      let total = 0;
+  Object.entries(cart).forEach(([id, qty]) => {
+    const item = productData[id];
+    if (!item) return;
+    const itemTotal = item.price * qty;
+    subtotal += itemTotal;
 
-      Object.entries(cart).forEach(([id, qty]) => {
-        const item = productData[id];
-        if (!item) return;
+    const div = document.createElement('div');
+    div.className = 'flex flex-col md:flex-row gap-4 items-start md:items-center border-b pb-4';
+    div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" class="w-32 h-auto border" />
+      <div class="flex-1">
+        <h3 class="text-lg font-medium">${item.name}</h3>
+        <div class="flex items-center mt-2 space-x-2">
+          <button class="quantity-btn" onclick="changeQty('${id}', -1)">-</button>
+          <span class="px-3">${qty}</span>
+          <button class="quantity-btn" onclick="changeQty('${id}', 1)">+</button>
+          <button class="text-sm text-red-500 underline ml-4" onclick="removeItem('${id}')">Remove</button>
+        </div>
+      </div>
+      <div class="text-right md:text-left font-medium">$${itemTotal.toFixed(2)}</div>
+    `;
+    container.appendChild(div);
+  });
 
-        const itemTotal = item.price * qty;
-        total += itemTotal;
+  if (subtotal === 0) {
+    container.innerHTML = '<p>Your cart is empty.</p>';
+  }
 
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <img src="${item.image}" alt="${item.name}">
-          <div class="item-details">
-            <div>${item.name}</div>
-            <div>$${item.price} x ${qty} = $${itemTotal}</div>
-          </div>
-          <div class="item-controls">
-            <button onclick="changeQty('${id}', -1)">-</button>
-            <span>${qty}</span>
-            <button onclick="changeQty('${id}', 1)">+</button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
+  document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('summary-total').textContent = `$${subtotal.toFixed(2)}`;
+}
 
-      if (total === 0) {
-        container.innerHTML = '<p>Your cart is empty.</p>';
-      } else {
-        container.innerHTML += `
-          <div class="total">Total: $${total}</div>
-          <button class="checkout-btn">Proceed to Checkout</button>
-        `;
-      }
-    }
+function changeQty(id, delta) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  if (cart[id] === 0) delete cart[id];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+  updateCartCount();
+}
 
-    function changeQty(id, delta) {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      cart[id] = Math.max(0, (cart[id] || 0) + delta);
-      if (cart[id] === 0) delete cart[id];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
-      updateCartCount();
-    }
+function removeItem(id) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  delete cart[id];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+  updateCartCount();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   updateCartCount();
 });
-
-  </script>
+</script>
 </body>
 </html>
