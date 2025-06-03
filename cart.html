@@ -14,15 +14,12 @@
 <body class="bg-[#fdf9f5] text-gray-800">
   <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" class="w-full block">
   <header class="bg-[#171516] text-white py-4">
-    <nav class="flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-4">
-      <div class="flex gap-6 justify-center md:justify-start w-full md:w-auto">
-        <a href="shop.html" class="text-[#f1e9e3] hover:underline">All Products</a>
-        <a href="about.html" class="text-[#f1e9e3] hover:underline">About Me</a>
-      </div>
-      <div class="relative mt-2 md:mt-0">
-        <a href="cart.html" class="text-[#f1e9e3]">Cart<span id="cart-count"></span></a>
-      </div>
-    </nav>
+<nav class="flex flex-col md:flex-row items-center justify-center md:justify-start gap-6 max-w-5xl mx-auto px-4">
+  <a href="shop.html" class="text-[#f1e9e3] hover:underline">All Products</a>
+  <a href="about.html" class="text-[#f1e9e3] hover:underline">About Me</a>
+  <a href="cart.html" class="text-[#f1e9e3] relative">Cart<span id="cart-count"></span></a>
+</nav>
+
   </header>
 
   <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -65,7 +62,10 @@ const productData = {
   'illustration04-8.5x11': { name: 'Illustration 04 (8.5x11)', price: 17, image: 'images/illustration04.jpg' },
   'illustration05-6x9': { name: 'Illustration 05 (6x9)', price: 15, image: 'images/illustration05.jpg' },
   'illustration05-8.5x11': { name: 'Illustration 05 (8.5x11)', price: 17, image: 'images/illustration05.jpg' },
-  'booktitle': { name: 'Book Title', price: 17, image: 'images/booktitle.jpg' }
+  'booktitle': { name: 'Book Title', price: 17, image: 'images/booktitle.jpg' },
+  'booktitle': { name: 'Book Title & Special 1', price: 18, image: 'images/booktitlespecial1.jpg' },
+  'booktitle': { name: 'Book Title & Special 2', price: 19, image: 'images/booktitlespecial2.jpg' },
+  'booktitle': { name: 'Book Title & Special 3', price: 20, image: 'images/booktitlespecial3.jpg' }
 };
 
 function updateCartCount() {
