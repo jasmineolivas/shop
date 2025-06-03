@@ -182,22 +182,21 @@
         <p class="price" id="price">$15</p>
         <label for="edition-select">Select Edition:</label>
 <select id="edition-select" onchange="selectEdition(this.value)">
-  <option value="6x9">Paperback (6x9)</option>
-  <option value="8.5x11">Large Paperback (8.5x11)</option>
-  <option value="special1">Paperback + Bookmark</option>
-  <option value="special2">Signed Hardcover</option>
+  <option value="paperback">Paperback</option>
+  <option value="special1">Hardcover</option>
+  <option value="special2">Signed Hardcover & bookmark</option>
+  <option value="special3">Complete goodies package</option>
 </select>
 
 <p>
-  This is where the description of the print will go. High quality print from the illustrated book. Printed on blabla paper, super cool drawing, etc.<br />
-  <em>"Caption from the book where the illustration is found"</em>
+  This is where a description of the book will go. It will contain the hook, the book blurb, and any comp titles or review quotes.<br />
+ Here is the book blurb<br />
+   <em>the book title drama</em><br />
+  lets see if we can get this on another line<br />
+  how does this work? another line for the blurb<br />
+  woohoo look another line over here
 </p>
 
-
-<div class="size-buttons">
-  <button data-size="6x9" onclick="selectSize('6x9')">6x9</button>
-  <button data-size="8.5x11" onclick="selectSize('8.5x11')">8.5x11</button>
-</div>
 
         <div id="cart-controls-wrapper"></div>
         <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" style="display:inline-block;margin-top:1rem;">
@@ -221,26 +220,26 @@
   </section>
 
   <script>
-    let selectedSize = '6x9';
+    let selectedSize = 'paperback';
 
-let selectedEdition = '6x9';
+let selectedEdition = 'paperback';
 
 function selectEdition(edition) {
   selectedEdition = edition;
   localStorage.setItem('selectedEdition', edition);
 
   const priceMap = {
-    '6x9': 15,
-    '8.5x11': 17,
-    'special1': 18,
-    'special2': 20
+    'paperback': 15,
+    'special1': 17,
+    'special2': 18,
+    'special3': 20
   };
 
   const imageMap = {
-    '6x9': 'booktitle.jpg',
-    '8.5x11': 'booktitle.jpg',
+    'paperback': 'booktitle.jpg',
     'special1': 'booktitlespecial1.jpg',
-    'special2': 'booktitlespecial2.jpg'
+    'special2': 'booktitlespecial2.jpg',
+    'special3': 'booktitlespecial3.jpg'
   };
 
   document.getElementById('price').textContent = `$${priceMap[edition]}`;
