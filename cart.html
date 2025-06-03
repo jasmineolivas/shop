@@ -83,7 +83,8 @@
         <span>Subtotal</span><span id="summary-subtotal">$0.00</span>
       </div>
       <div class="flex justify-between py-1">
-        <span>Shipping*</span><span id="summary-shipping"><em>Free</em></span>
+<p>Shipping <span id="shipping-amount">$0.00</span></p>
+
       </div>
       <div class="flex justify-between py-1">
         <span>Tax</span><span>Calculated at checkout</span>
@@ -174,8 +175,9 @@ function renderCart() {
     container.innerHTML = '<p>Your cart is empty.</p>';
   }
 
-  const shippingCost = bookCount > 3 ? 5.0 : 0.0;
-  const total = subtotal + shippingCost;
+document.getElementById('shipping-amount').textContent = 
+  shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`;
+
 
   document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
   document.getElementById('summary-shipping').textContent = `$${shippingCost.toFixed(2)}`;
