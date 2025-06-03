@@ -15,7 +15,7 @@
   <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" class="w-full block">
   <header class="bg-[#171516] text-white py-4">
     <nav class="flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-4">
-      <div class="flex gap-6 justify-center md:justify-start">
+      <div class="flex gap-6 justify-center md:justify-start w-full md:w-auto">
         <a href="shop.html" class="text-[#f1e9e3] hover:underline">All Products</a>
         <a href="about.html" class="text-[#f1e9e3] hover:underline">About Me</a>
       </div>
@@ -39,7 +39,7 @@
         <span>Subtotal</span><span id="summary-subtotal">$0.00</span>
       </div>
       <div class="flex justify-between py-1">
-        <span>Shipping</span><span>Calculated at checkout</span>
+        <span>Shipping</span><span id="summary-shipping">$0.00</span>
       </div>
       <div class="flex justify-between py-1">
         <span>Tax</span><span>Calculated at checkout</span>
@@ -90,12 +90,17 @@ function renderCart() {
   const container = document.getElementById('cart-container');
   container.innerHTML = '';
   let subtotal = 0;
+  let bookCount = 0;
 
   Object.entries(cart).forEach(([id, qty]) => {
     const item = productData[id];
     if (!item) return;
     const itemTotal = item.price * qty;
     subtotal += itemTotal;
+
+    if (id === 'booktitle') {
+      bookCount += qty;
+    }
 
     const div = document.createElement('div');
     div.className = 'flex flex-col md:flex-row gap-4 items-start md:items-center border-b pb-4';
@@ -119,8 +124,12 @@ function renderCart() {
     container.innerHTML = '<p>Your cart is empty.</p>';
   }
 
+  const shippingCost = bookCount > 3 ? 5.0 : 0.0;
+  const total = subtotal + shippingCost;
+
   document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
-  document.getElementById('summary-total').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('summary-shipping').textContent = `$${shippingCost.toFixed(2)}`;
+  document.getElementById('summary-total').textContent = `$${total.toFixed(2)}`;
 }
 
 function changeQty(id, delta) {
