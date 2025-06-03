@@ -75,26 +75,6 @@
       font-size: 1.25rem;
       margin: 0.5rem 0;
     }
-.size-buttons button {
-  margin-right: 1rem;
-  background: none;
-  border: 1px solid #D98F59; /* black border */
-  color: #D98F59;            /* black text */
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-radius: 0.25rem;
-}
-    .size-buttons button:hover {
-  background-color: #D98F59;
-  color: #fff;
-  border-color: #D98F59;
-}
-
-.size-buttons button.selected {
-  background-color: #D98F59;
-  color: #fff;
-  border-color: #D98F59;
-}
 
 
     .cart-controls {
@@ -270,52 +250,63 @@ function updateCartCount() {
 
 function renderCartControls() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
-const id = `booktitle-${selectedEdition}`;
-  quantity = cart[id] || 0;
+  const id = `booktitle-${selectedEdition}`;
+  const quantity = cart[id] || 0;
+
+  const amazonLink = `<a href="https://www.amazon.com/dp/YOURASIN" target="_blank">
+    <button style="background:#333;color:white;padding:0.5rem 1rem;border:none;border-radius:0.5rem;cursor:pointer;">
+      Buy on Amazon
+    </button>
+  </a>`;
 
   const container = document.getElementById('cart-controls-wrapper');
   if (quantity === 0) {
-    container.innerHTML = `<div class="cart-controls"><button onclick="addToCart()">Add to Cart</button></div>`;
+    container.innerHTML = `
+      <div class="cart-controls">
+        <button onclick="addToCart()">Add to Cart</button>
+        ${amazonLink}
+      </div>`;
   } else {
     container.innerHTML = `
       <div class="cart-controls">
         <button onclick="decreaseQty()">-</button>
         <span>${quantity} in cart</span>
         <button onclick="increaseQty()">+</button>
-      </div>
-    `;
+        ${amazonLink}
+      </div>`;
   }
 }
 
 
 
-    function addToCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const id = `booktitle-${selectedSize}`;
-      cart[id] = (cart[id] || 0) + 1;
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      renderCartControls();
-    }
 
-    function increaseQty() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const id = `booktitle-${selectedSize}`;
-      cart[id]++;
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      renderCartControls();
-    }
+function addToCart() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const id = `booktitle-${selectedEdition}`;
+  cart[id] = (cart[id] || 0) + 1;
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  renderCartControls();
+}
 
-    function decreaseQty() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const id = `booktitle-${selectedSize}`;
-      cart[id] = Math.max(0, (cart[id] || 0) - 1);
-      if (cart[id] === 0) delete cart[id];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      renderCartControls();
-    }
+function increaseQty() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const id = `booktitle-${selectedEdition}`;
+  cart[id]++;
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  renderCartControls();
+}
+
+function decreaseQty() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const id = `booktitle-${selectedEdition}`;
+  cart[id] = Math.max(0, (cart[id] || 0) - 1);
+  if (cart[id] === 0) delete cart[id];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  renderCartControls();
+}
 
     document.getElementById('zoom-img').addEventListener('click', () => {
       const overlay = document.createElement('div');
