@@ -1,149 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
   <title>Your Cart</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
-    th, td { border-bottom: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-    img { width: 60px; height: 60px; object-fit: cover; }
-    .quantity-controls button { padding: 0.2rem 0.5rem; }
-    #shipping { margin: 1rem 0; }
-    #checkout { padding: 0.7rem 1.2rem; background: #D98F59; border: none; color: white; font-size: 1rem; cursor: pointer; }
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #171516;
+    }
+    header {
+      background-color: #171516;
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .nav-cart {
+      margin-left: auto;
+      padding-left: 2rem;
+    }
+    nav a {
+      color: #f1e9e3;
+      text-decoration: none;
+      font-weight: normal;
+      font-size: 1rem;
+    }
+    .cart-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 1px solid #ddd;
+      padding: 1rem 0;
+      align-items: center;
+    }
+    .cart-item img {
+      width: 100px;
+      border-radius: 0.5rem;
+    }
+    .item-details {
+      flex-grow: 1;
+    }
+    .item-controls button {
+      margin: 0 0.25rem;
+      background-color: #D98F59;
+      border: none;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+    .total {
+      text-align: right;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+    }
+    .checkout-btn {
+      display: block;
+      margin: 2rem 0 0 auto;
+      background-color: #D98F59;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-
-  <h1>Your Cart</h1>
-
-  <table id="cart-table">
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Price Each</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Cart items will be inserted here -->
-    </tbody>
-  </table>
-
-  <div id="cart-summary">
-    <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
-    <div id="shipping">
-      <label for="zip">Enter ZIP for shipping: </label>
-      <input type="text" id="zip" maxlength="10" />
-      <button id="calculate-shipping">Calculate Shipping</button>
-      <p id="shipping-cost"></p>
-    </div>
-    <p><strong>Total:</strong> $<span id="total">0.00</span></p>
-  </div>
-
-  <button id="checkout">Proceed to Payment</button>
-
+  <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="width: 100%; display: block;">
+  <header>
+    <nav>
+      <div class="nav-center">
+        <a href="shop.html">All Products</a>
+        <a href="about.html">About Me</a>
+      </div>
+      <div class="nav-cart">
+        <a href="cart.html" class="cart-link">Cart<span id="cart-count"></span></a>
+      </div>
+    </nav>
+  </header>
+  <section class="cart-container" id="cart-container">
+    <!-- Cart items will be rendered here -->
+  </section>
   <script>
-    // Example product data (you will replace this with your real product info)
-    const products = {
-      "prod1": { name: "Art Print 1", price: 15.99, image: "art1.jpg" },
-      "prod2": { name: "Art Print 2", price: 22.50, image: "art2.jpg" },
-      // Add more products here as needed
+    const productData = {
+      'coverart-6x9': {
+        name: 'Cover Art (6x9)',
+        price: 15,
+        image: 'images/coverart.jpg'
+      },
+      'coverart-8.5x11': {
+        name: 'Cover Art (8.5x11)',
+        price: 17,
+        image: 'images/coverart.jpg'
+      }
+      // Add other products here later
     };
 
-    const cartTableBody = document.querySelector('#cart-table tbody');
-    const subtotalEl = document.getElementById('subtotal');
-    const totalEl = document.getElementById('total');
-    const shippingCostEl = document.getElementById('shipping-cost');
-    const zipInput = document.getElementById('zip');
-
-    let cart = JSON.parse(localStorage.getItem('cart')) || {};
-    let shippingCost = 0;
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+      document.getElementById('cart-count').textContent = count > 0 ? `(${count})` : '';
+    }
 
     function renderCart() {
-      cartTableBody.innerHTML = '';
-      let subtotal = 0;
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const container = document.getElementById('cart-container');
+      container.innerHTML = '';
+      let total = 0;
 
-      for (const productId in cart) {
-        const product = products[productId];
-        if (!product) continue; // safety check
-        const qty = cart[productId];
-        const lineTotal = product.price * qty;
-        subtotal += lineTotal;
+      Object.entries(cart).forEach(([id, qty]) => {
+        const item = productData[id];
+        if (!item) return;
 
-        const tr = document.createElement('tr');
+        const itemTotal = item.price * qty;
+        total += itemTotal;
 
-        tr.innerHTML = `
-          <td>
-            <img src="${product.image}" alt="${product.name}" />
-            <span>${product.name}</span>
-          </td>
-          <td>
-            <div class="quantity-controls">
-              <button class="decrease">-</button>
-              <span>${qty}</span>
-              <button class="increase">+</button>
-            </div>
-          </td>
-          <td>$${product.price.toFixed(2)}</td>
-          <td>$${lineTotal.toFixed(2)}</td>
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="item-details">
+            <div>${item.name}</div>
+            <div>$${item.price} x ${qty} = $${itemTotal}</div>
+          </div>
+          <div class="item-controls">
+            <button onclick="changeQty('${id}', -1)">-</button>
+            <span>${qty}</span>
+            <button onclick="changeQty('${id}', 1)">+</button>
+          </div>
         `;
+        container.appendChild(div);
+      });
 
-        // Add event listeners for + and - buttons
-        tr.querySelector('.increase').addEventListener('click', () => {
-          cart[productId]++;
-          saveCart();
-          renderCart();
-        });
-
-        tr.querySelector('.decrease').addEventListener('click', () => {
-          cart[productId]--;
-          if (cart[productId] <= 0) {
-            delete cart[productId];
-          }
-          saveCart();
-          renderCart();
-        });
-
-        cartTableBody.appendChild(tr);
-      }
-
-      subtotalEl.textContent = subtotal.toFixed(2);
-      updateTotal();
-    }
-
-    function updateTotal() {
-      const subtotal = parseFloat(subtotalEl.textContent);
-      const total = subtotal + shippingCost;
-      totalEl.textContent = total.toFixed(2);
-    }
-
-    function saveCart() {
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-
-    document.getElementById('calculate-shipping').addEventListener('click', () => {
-      const zip = zipInput.value.trim();
-      if (!zip.match(/^\d{5}(-\d{4})?$/)) {
-        shippingCostEl.textContent = "Please enter a valid US ZIP code.";
-        shippingCost = 0;
+      if (total === 0) {
+        container.innerHTML = '<p>Your cart is empty.</p>';
       } else {
-        // Dummy shipping calculator - replace with your logic or API call
-        shippingCost = 5.99;
-        shippingCostEl.textContent = `Shipping: $${shippingCost.toFixed(2)}`;
+        container.innerHTML += `
+          <div class="total">Total: $${total}</div>
+          <button class="checkout-btn">Proceed to Checkout</button>
+        `;
       }
-      updateTotal();
-    });
+    }
 
-    document.getElementById('checkout').addEventListener('click', () => {
-      alert('Checkout flow not implemented yet. You will integrate Stripe or PayPal here.');
-      // Here you will redirect to your payment page or open payment modal
-    });
+    function changeQty(id, delta) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      cart[id] = Math.max(0, (cart[id] || 0) + delta);
+      if (cart[id] === 0) delete cart[id];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+      updateCartCount();
+    }
 
-    renderCart();
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartCount();
+      renderCart();
+    });
   </script>
-
 </body>
 </html>
