@@ -172,6 +172,61 @@ function renderCart() {
 
     container.appendChild(div);
   });
+  function formatPrice(price) {
+  return `$${price.toFixed(2)}`;
+}
+
+function renderCart() {
+  const cart = JSON.parse(localStorage.getItem('localCart')) || {};
+  const container = document.getElementById('cart-container');
+  container.innerHTML = '';
+  let subtotal = 0;
+
+  Object.keys(cart).forEach(productId => {
+    const quantity = cart[productId];
+    const product = productData[productId];
+
+    if (!product) return;
+
+    const itemTotal = product.price * quantity;
+    subtotal += itemTotal;
+
+    const item = document.createElement('div');
+    item.className = 'flex items-center gap-4 border-b pb-4';
+    item.innerHTML = `
+      <img src="${product.image}" alt="${product.name}" class="w-20 h-auto rounded">
+      <div class="flex-grow">
+        <a href="${product.page}" class="font-semibold text-lg hover:underline">${product.name}</a>
+        <p class="text-sm text-gray-500">${formatPrice(product.price)} x ${quantity}</p>
+        <p class="text-sm font-semibold">Total: ${formatPrice(itemTotal)}</p>
+      </div>
+      <div class="flex flex-col items-end">
+        <button onclick="updateQuantity('${productId}', ${quantity - 1})" class="quantity-btn">−</button>
+        <span>${quantity}</span>
+        <button onclick="updateQuantity('${productId}', ${quantity + 1})" class="quantity-btn">+</button>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+
+  document.getElementById('summary-subtotal').textContent = formatPrice(subtotal);
+  document.getElementById('summary-total').textContent = formatPrice(subtotal); // Shipping is free
+  document.getElementById('cart-count').textContent = Object.keys(cart).length ? ' ●' : '';
+}
+
+function updateQuantity(productId, quantity) {
+  let cart = JSON.parse(localStorage.getItem('localCart')) || {};
+  if (quantity <= 0) {
+    delete cart[productId];
+  } else {
+    cart[productId] = quantity;
+  }
+  localStorage.setItem('localCart', JSON.stringify(cart));
+  renderCart();
+}
+
+document.addEventListener('DOMContentLoaded', renderCart);
+
 
   if (subtotal === 0) {
     container.innerHTML = '<p>Your cart is empty.</p>';
