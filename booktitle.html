@@ -337,6 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   </script>
   <script>
+    function getCartQuantityForProduct(productId) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  return cart[productId] || 0;
+}
+
 function renderCartControls(quantity) {
   const container = document.getElementById('cart-controls-wrapper');
   if (!container) return;
@@ -359,7 +364,9 @@ function renderCartControls(quantity) {
 }
 
 // TEMPORARY — force render on page load:
-renderCartControls(0);
+const productId = 'booktitle'; // use your actual product ID
+const quantity = getCartQuantityForProduct(productId);
+renderCartControls(quantity);
 </script>
 
 </body>
