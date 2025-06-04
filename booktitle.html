@@ -263,7 +263,6 @@ function renderCartControls() {
     container.innerHTML = `
       <div class="cart-controls">
         <button onclick="addToCart()">Add to Cart</button>
-        ${amazonLink}
       </div>`;
   } else {
     container.innerHTML = `
@@ -271,7 +270,6 @@ function renderCartControls() {
         <button onclick="decreaseQty()">-</button>
         <span>${quantity} in cart</span>
         <button onclick="increaseQty()">+</button>
-        ${amazonLink}
       </div>`;
   }
 }
