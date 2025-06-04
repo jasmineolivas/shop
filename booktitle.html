@@ -336,5 +336,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   </script>
+  <script>
+function renderCartControls(quantity) {
+  const container = document.getElementById('cart-controls-wrapper');
+  if (!container) return;
+  
+  if (quantity === 0) {
+    container.innerHTML = `
+      <div class="cart-controls">
+        <button onclick="addToCart()">Add to Cart</button>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="cart-controls">
+        <button onclick="decreaseQty()">-</button>
+        <span>${quantity} in cart</span>
+        <button onclick="increaseQty()">+</button>
+      </div>
+    `;
+  }
+}
+
+// TEMPORARY — force render on page load:
+renderCartControls(0);
+</script>
+
 </body>
 </html>
