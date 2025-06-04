@@ -188,10 +188,16 @@ html {
 </p>
 
 
-<div class="size-buttons">
-  <button data-size="6x9" onclick="selectSize('6x9')">6x9</button>
-  <button data-size="8.5x11" onclick="selectSize('8.5x11')">8.5x11</button>
+<div>
+  <label for="edition-select">Choose an edition:</label>
+  <select id="edition-select" onchange="updateEdition()">
+    <option value="booktitle-paperback" selected>Paperback — $15</option>
+    <option value="booktitle-special1">Book Title + Special1 — $17</option>
+    <option value="booktitle-special2">Book Title + Special2 — $18</option>
+    <option value="booktitle-special3">Book Title + Special3 — $20</option>
+  </select>
 </div>
+
 
         <div id="cart-controls-wrapper"></div>
       </div>
@@ -318,5 +324,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
   </script>
+  <script>
+  const productData = {
+    'booktitle-paperback': { name: 'Book Title', price: 15, image: 'images/booktitle.jpg' },
+    'booktitle-special1': { name: 'Book Title + Special1', price: 17, image: 'images/booktitlespecial1.jpg' },
+    'booktitle-special2': { name: 'Book Title + Special2', price: 18, image: 'images/booktitlespecial2.jpg' },
+    'booktitle-special3': { name: 'Book Title + Special3', price: 20, image: 'images/booktitlespecial3.jpg' },
+  };
+
+  let selectedProductId = 'booktitle-paperback';
+
+  function updateEdition() {
+    const select = document.getElementById('edition-select');
+    selectedProductId = select.value;
+    const data = productData[selectedProductId];
+    document.getElementById('price').textContent = `$${data.price}`;
+    document.getElementById('zoom-img').src = data.image;
+  }
+</script>
+
 </body>
 </html>
