@@ -162,6 +162,7 @@
         <label for="edition-select">Select Edition:</label>
 <select id="edition-select" onchange="selectEdition(this.value)">
   <option value="paperback">Paperback</option>
+  <option value="kindle">Kindle</option>
   <option value="special1">Hardcover</option>
   <option value="special2">Signed Hardcover & bookmark</option>
   <option value="special3">Complete goodies package</option>
@@ -177,14 +178,15 @@
 </p>
 
 
-<div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1rem;">
   <div id="cart-controls-wrapper"></div>
   <div class="cart-controls">
-    <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" style="color: white; text-decoration: none;">
-      Buy on Amazon
+    <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" style="text-decoration: none;">
+      <button style="all: unset; cursor: pointer;">Buy on Amazon</button>
     </a>
   </div>
 </div>
+
 
 
       </div>
@@ -212,6 +214,7 @@ function selectEdition(edition) {
 
   const priceMap = {
     'paperback': 15,
+   'paperback': 6,
     'special1': 17,
     'special2': 18,
     'special3': 20
@@ -219,6 +222,7 @@ function selectEdition(edition) {
 
   const imageMap = {
     'paperback': 'booktitle.jpg',
+     'kindle': 'booktitle.jpg',
     'special1': 'booktitlespecial1.jpg',
     'special2': 'booktitlespecial2.jpg',
     'special3': 'booktitlespecial3.jpg'
@@ -300,6 +304,16 @@ function decreaseQty() {
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartCount();
   renderCartControls();
+}
+
+function handleVersionChange() {
+  const selected = document.getElementById('version-select').value;
+  const cartWrapper = document.getElementById('cart-controls-wrapper');
+  if (selected === 'kindle') {
+    cartWrapper.innerHTML = ''; // hide cart buttons
+  } else {
+    renderCartControls(getCartQtyForThisItem()); // show dynamic cart
+  }
 }
 
     document.getElementById('zoom-img').addEventListener('click', () => {
