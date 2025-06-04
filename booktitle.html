@@ -233,6 +233,13 @@ document.querySelectorAll('.size-buttons button').forEach(btn => {
   renderCartControls(); // re-render with correct size
 }
 
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart')) || {};
+}
+
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
 
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
