@@ -114,25 +114,6 @@
       max-height: 90vh;
       cursor: zoom-out;
     }
-.store-button {
-  background-color: #D98F59;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  text-align: center;
-}
-.store-button.alt {
-  background-color: #333;
-}
-
-
 .policy-section {
   display: flex;
   justify-content: space-between;
@@ -196,7 +177,14 @@
 </p>
 
 
-<div id="cart-controls-wrapper"></div>
+<div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+  <div id="cart-controls-wrapper"></div>
+  <div class="cart-controls">
+    <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" style="color: white; text-decoration: none;">
+      Buy on Amazon
+    </a>
+  </div>
+</div>
 
 
       </div>
@@ -236,8 +224,8 @@ function selectEdition(edition) {
     'special3': 'booktitlespecial3.jpg'
   };
 
-  document.getElementById('price').textContent = `$${priceMap[edition]}`;
-  document.getElementById('zoom-img').src = `images/${imageMap[edition]}`;
+  document.getElementById('price').textContent = $${priceMap[edition]};
+  document.getElementById('zoom-img').src = images/${imageMap[edition]};
   renderCartControls();
 }
 
@@ -262,38 +250,33 @@ function updateCartCount() {
 }
 
 
-function renderCartControls(productId, productName, price, imageSrc, editionLabel) {
-  const cartControlsWrapper = document.getElementById('cart-controls-wrapper');
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const quantity = cart.filter(item => item.id === productId).length;
+function renderCartControls() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const id = booktitle-${selectedEdition};
+  const quantity = cart[id] || 0;
 
-  const addToCartButton = `
-    <div class="cart-controls">
-      <span>${quantity} in cart</span>
-      <button onclick="addToCart('${productId}', '${productName}', ${price}, '${imageSrc}', '${editionLabel}')">
-        Add to Cart
-      </button>
-    </div>
-  `;
-
-  const amazonLink = `
-    <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" class="store-button alt">
-      Buy on Amazon
-    </a>
-  `;
-
-  cartControlsWrapper.innerHTML = `
-    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1rem;">
-      ${addToCartButton}
-      ${amazonLink}
-    </div>
-  `;
+  const container = document.getElementById('cart-controls-wrapper');
+  if (quantity === 0) {
+    container.innerHTML = 
+      <div class="cart-controls">
+        <button onclick="addToCart()">Add to Cart</button>
+      </div>;
+  } else {
+    container.innerHTML = 
+      <div class="cart-controls">
+        <button onclick="decreaseQty()">-</button>
+        <span>${quantity} in cart</span>
+        <button onclick="increaseQty()">+</button>
+      </div>;
+  }
 }
+
+
 
 
 function addToCart() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const id = `booktitle-${selectedEdition}`;
+  const id = booktitle-${selectedEdition};
   cart[id] = (cart[id] || 0) + 1;
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartCount();
@@ -302,7 +285,7 @@ function addToCart() {
 
 function increaseQty() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const id = `booktitle-${selectedEdition}`;
+  const id = booktitle-${selectedEdition};
   cart[id]++;
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartCount();
@@ -311,7 +294,7 @@ function increaseQty() {
 
 function decreaseQty() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const id = `booktitle-${selectedEdition}`;
+  const id = booktitle-${selectedEdition};
   cart[id] = Math.max(0, (cart[id] || 0) - 1);
   if (cart[id] === 0) delete cart[id];
   localStorage.setItem('cart', JSON.stringify(cart));
@@ -322,7 +305,7 @@ function decreaseQty() {
     document.getElementById('zoom-img').addEventListener('click', () => {
       const overlay = document.createElement('div');
       overlay.className = 'zoom-overlay';
-      overlay.innerHTML = `<img src="images/booktitle.jpg" alt="Zoomed" />`;
+      overlay.innerHTML = <img src="images/booktitle.jpg" alt="Zoomed" />;
       overlay.onclick = () => document.body.removeChild(overlay);
       document.body.appendChild(overlay);
     });
