@@ -184,7 +184,6 @@
   </button>
 </a>
 
-
       </div>
     </div>
     <div class="policy-section">
@@ -316,10 +315,12 @@ function decreaseQty() {
       document.body.appendChild(overlay);
     });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    selectEdition('paperback'); // Set default edition
-    updateCartCount();          // Ensure cart bubble works
-  });
+document.addEventListener('DOMContentLoaded', () => {
+selectedEdition = localStorage.getItem('selectedEdition') || '6x9';
+document.getElementById('edition-select').value = selectedEdition;
+selectEdition(selectedEdition);
+  updateCartCount();
+});
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   updateCartCount();
