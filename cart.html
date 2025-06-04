@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Cart</title>
-  <script src="https://cdn.tailwindcss.com"></script>
- <style>
+  <style>
     body {
       font-family: sans-serif;
       margin: 0;
@@ -13,234 +12,201 @@
       background-color: #fff;
       color: #171516;
     }
+
     header {
       background-color: #171516;
       color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      padding: 1rem 0;
+      text-align: center;
     }
+
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 2rem;
       max-width: 1000px;
       margin: 0 auto;
+      padding: 0 2rem;
     }
-    .nav-center {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      flex-grow: 1;
-      text-align: center;
-    }
-    .nav-cart {
-      margin-left: auto;
-      padding-left: 2rem;
-    }
+
     nav a {
       color: #f1e9e3;
       text-decoration: none;
-      font-weight: normal;
-      font-size: 1rem;
+      margin: 0 1rem;
     }
-html {
-  overflow-y: scroll;
-}
-    .quantity-btn {
-      @apply px-2 py-1 border border-gray-300 hover:bg-gray-100;
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .cart-items {
+      flex: 2;
+    }
+
+    .summary {
+      flex: 1;
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .cart-item img {
+      width: 100px;
+      margin-right: 1rem;
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    button {
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 1rem;
     }
   </style>
-
 </head>
 <body>
-<img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="width: 100%; display: block;">
-<header>
-  <nav>
-    <div class="nav-center">
-      <a href="home.html">All Products</a>
-      <a href="about.html">About Me</a>
-    </div>
-    <div class="nav-cart">
-      <a href="cart.html" class="cart-link">Cart<span id="cart-count"></span></a>
-    </div>
-  </nav>
-</header>
+  <img src="images/githubwebsitebanner02.jpg" alt="Header Banner" style="width: 100%; display: block;">
+  <header>
+    <nav>
+      <div>
+        <a href="home.html">All Products</a>
+        <a href="about.html">About Me</a>
+      </div>
+      <div>
+        <a href="cart.html">Cart <span id="cart-count"></span></a>
+      </div>
+    </nav>
+  </header>
 
-  <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
-    <!-- Cart Items -->
-    <div class="lg:col-span-2 space-y-6">
-      <h2 class="text-2xl font-semibold mb-4">Your Cart</h2>
+  <div class="container">
+    <div class="cart-items">
+      <h2>Your Cart</h2>
       <div id="cart-container"></div>
     </div>
 
-    <!-- Summary -->
-    <div class="bg-white p-6 shadow rounded-lg sticky top-10 h-fit">
-      <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
-      <div class="flex justify-between py-1">
-        <span>Subtotal</span><span id="summary-subtotal">$0.00</span>
-      </div>
-<div class="flex justify-between py-1">
-  <span>Shipping</span><span id="shipping-amount">Free</span>
-</div>
-
-      <div class="flex justify-between py-1">
-        <span>Tax</span><span>Calculated at checkout</span>
-      </div>
-      <div class="border-t mt-4 pt-4 flex justify-between font-bold text-lg">
-        <span>Total</span><span id="summary-total">$0.00</span>
-      </div>
-      <button class="w-full bg-black text-white mt-6 py-2 rounded hover:opacity-90">Checkout</button>
+    <div class="summary">
+      <h3>Order Summary</h3>
+      <p>Subtotal: <span id="summary-subtotal">$0.00</span></p>
+      <p>Shipping: Free (US only)</p>
+      <p>Tax: Calculated at checkout</p>
+      <div class="total">Total: <span id="summary-total">$0.00</span></div>
+      <button>Checkout</button>
     </div>
-    <p><em>*Shipping included for US based orders only. International shipping calculated at checkout.</em></p>
-
   </div>
 
-<script>
-const productData = {
-  'coverart-6x9': { name: 'Cover Art (6x9)', price: 15, image: 'images/coverart.jpg', page: 'coverart.html' },
-  'coverart-8.5x11': { name: 'Cover Art (8.5x11)', price: 17, image: 'images/coverart.jpg', page: 'coverart.html' },
-  'illustration01-6x9': { name: 'Illustration 01 (6x9)', price: 15, image: 'images/illustration01.jpg', page: 'illustration01.html' },
-  'illustration01-8.5x11': { name: 'Illustration 01 (8.5x11)', price: 17, image: 'images/illustration01.jpg', page: 'illustration01.html' },
-  'illustration02-6x9': { name: 'Illustration 02 (6x9)', price: 15, image: 'images/illustration02.jpg', page: 'illustration02.html' },
-  'illustration02-8.5x11': { name: 'Illustration 02 (8.5x11)', price: 17, image: 'images/illustration02.jpg', page: 'illustration02.html' },
-  'illustration03-6x9': { name: 'Illustration 03 (6x9)', price: 15, image: 'images/illustration03.jpg', page: 'illustration03.html' },
-  'illustration03-8.5x11': { name: 'Illustration 03 (8.5x11)', price: 17, image: 'images/illustration03.jpg', page: 'illustration03.html' },
-  'illustration04-6x9': { name: 'Illustration 04 (6x9)', price: 15, image: 'images/illustration04.jpg', page: 'illustration04.html' },
-  'illustration04-8.5x11': { name: 'Illustration 04 (8.5x11)', price: 17, image: 'images/illustration04.jpg', page: 'illustration04.html' },
-  'illustration05-6x9': { name: 'Illustration 05 (6x9)', price: 15, image: 'images/illustration05.jpg', page: 'illustration05.html' },
-  'illustration05-8.5x11': { name: 'Illustration 05 (8.5x11)', price: 17, image: 'images/illustration05.jpg', page: 'illustration05.html' },
-  'booktitle-paperback': { name: 'Book Title', price: 15, image: 'images/booktitle.jpg', page: 'booktitle.html' },
-  'booktitle-special1': { name: 'Book Title + Special1', price: 17, image: 'images/booktitlespecial1.jpg', page: 'booktitle.html' },
-  'booktitle-special2': { name: 'Book Title + Special2', price: 18, image: 'images/booktitlespecial2.jpg', page: 'booktitle.html' },
-  'booktitle-special3': { name: 'Book Title + Special3', price: 20, image: 'images/booktitlespecial3.jpg', page: 'booktitle.html' }
+  <script>
+    const productData = {
+     'coverart-6x9': { name: 'Cover Art (6x9)', price: 15, image: 'images/coverart.jpg', page: 'coverart.html' },
+    'coverart-8.5x11': { name: 'Cover Art (8.5x11)', price: 17, image: 'images/coverart.jpg', page: 'coverart.html' },
+    'illustration01-6x9': { name: 'Illustration 01 (6x9)', price: 15, image: 'images/illustration01.jpg', page: 'illustration01.html' },
+    'illustration01-8.5x11': { name: 'Illustration 01 (8.5x11)', price: 17, image: 'images/illustration01.jpg', page: 'illustration01.html' },
+    'illustration02-6x9': { name: 'Illustration 02 (6x9)', price: 15, image: 'images/illustration02.jpg', page: 'illustration02.html' },
+    'illustration02-8.5x11': { name: 'Illustration 02 (8.5x11)', price: 17, image: 'images/illustration02.jpg', page: 'illustration02.html' },
+    'illustration03-6x9': { name: 'Illustration 03 (6x9)', price: 15, image: 'images/illustration03.jpg', page: 'illustration03.html' },
+    'illustration03-8.5x11': { name: 'Illustration 03 (8.5x11)', price: 17, image: 'images/illustration03.jpg', page: 'illustration03.html' },
+    'illustration04-6x9': { name: 'Illustration 04 (6x9)', price: 15, image: 'images/illustration04.jpg', page: 'illustration04.html' },
+    'illustration04-8.5x11': { name: 'Illustration 04 (8.5x11)', price: 17, image: 'images/illustration04.jpg', page: 'illustration04.html' },
+    'illustration05-6x9': { name: 'Illustration 05 (6x9)', price: 15, image: 'images/illustration05.jpg', page: 'illustration05.html' },
+    'illustration05-8.5x11': { name: 'Illustration 05 (8.5x11)', price: 17, image: 'images/illustration05.jpg', page: 'illustration05.html' },
+    'booktitle-paperback': { name: 'Book Title', price: 15, image: 'images/booktitle.jpg', page: 'booktitle.html' },
+    'booktitle-special1': { name: 'Book Title + Special1', price: 17, image: 'images/booktitlespecial1.jpg', page: 'booktitle.html' },
+    'booktitle-special2': { name: 'Book Title + Special2', price: 18, image: 'images/booktitlespecial2.jpg', page: 'booktitle.html' },
+    'booktitle-special3': { name: 'Book Title + Special3', price: 20, image: 'images/booktitlespecial3.jpg', page: 'booktitle.html' },
+    };
 
-};
+    function getCart() {
+      return JSON.parse(localStorage.getItem('cart')) || {};
+    }
 
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-  const badge = document.getElementById('cart-count');
-  if (count > 0) {
-    badge.style.display = 'inline-block';
-    badge.style.background = '#D98F59';
-    badge.style.width = '0.75rem';
-    badge.style.height = '0.75rem';
-    badge.style.borderRadius = '50%';
-    badge.style.marginLeft = '0.5rem';
-    badge.textContent = '';
-  } else {
-    badge.style.display = 'none';
-  }
-}
+    function saveCart(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
 
-function renderCart() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const container = document.getElementById('cart-container');
-  container.innerHTML = '';
-  let subtotal = 0;
+    function renderCart() {
+      const cart = getCart();
+      const container = document.getElementById('cart-container');
+      container.innerHTML = '';
+      let subtotal = 0;
 
-  Object.entries(cart).forEach(([id, qty]) => {
-    const item = productData[id];
-    if (!item) return;
-    const itemTotal = item.price * qty;
-    subtotal += itemTotal;
+      for (let id in cart) {
+        const item = cart[id];
+        const product = productData[id];
+        if (!product) continue;
 
-    const div = document.createElement('div');
-    div.className = 'flex flex-col md:flex-row gap-4 items-start md:items-center border-b pb-4';
+        const itemTotal = item.quantity * product.price;
+        subtotal += itemTotal;
 
-    div.innerHTML = `
-      <a href="${item.page || '#'}">
-        <img src="${item.image}" alt="${item.name}" class="w-32 h-auto border" />
-      </a>
-      <div class="flex-1">
-        <h3 class="text-lg font-medium">
-          <a href="${item.page || '#'}" class="hover:underline">${item.name}</a>
-        </h3>
-        <div class="flex items-center mt-2 space-x-2">
-          <button class="quantity-btn" onclick="changeQty('${id}', -1)">-</button>
-          <span class="px-3">${qty}</span>
-          <button class="quantity-btn" onclick="changeQty('${id}', 1)">+</button>
-          <button class="text-sm text-red-500 underline ml-4" onclick="removeItem('${id}')">Remove</button>
-        </div>
-      </div>
-      <div class="text-right md:text-left font-medium">$${itemTotal.toFixed(2)}</div>
-    `;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${product.image}" alt="${product.name}">
+          <div class="item-details">
+            <strong>${product.name}</strong><br>
+            $${product.price.toFixed(2)} x ${item.quantity} = $${itemTotal.toFixed(2)}
+          </div>
+          <div class="item-actions">
+            <button onclick="changeQuantity('${id}', -1)">-</button>
+            <button onclick="changeQuantity('${id}', 1)">+</button>
+            <button onclick="removeItem('${id}')">Remove</button>
+          </div>
+        `;
+        container.appendChild(div);
+      }
 
-    container.appendChild(div);
-  });
-  function formatPrice(price) {
-  return `$${price.toFixed(2)}`;
-}
+      document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('summary-total').textContent = `$${subtotal.toFixed(2)}`;
+      updateCartCount();
+    }
 
-function renderCart() {
-  const cart = JSON.parse(localStorage.getItem('localCart')) || {};
-  const container = document.getElementById('cart-container');
-  container.innerHTML = '';
-  let subtotal = 0;
+    function changeQuantity(id, delta) {
+      const cart = getCart();
+      if (cart[id]) {
+        cart[id].quantity += delta;
+        if (cart[id].quantity <= 0) delete cart[id];
+        saveCart(cart);
+        renderCart();
+      }
+    }
 
-  Object.keys(cart).forEach(productId => {
-    const quantity = cart[productId];
-    const product = productData[productId];
+    function removeItem(id) {
+      const cart = getCart();
+      delete cart[id];
+      saveCart(cart);
+      renderCart();
+    }
 
-    if (!product) return;
+    function updateCartCount() {
+      const cart = getCart();
+      let count = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+      document.getElementById('cart-count').textContent = count > 0 ? ` (${count})` : '';
+    }
 
-    const itemTotal = product.price * quantity;
-    subtotal += itemTotal;
-
-    const item = document.createElement('div');
-    item.className = 'flex items-center gap-4 border-b pb-4';
-    item.innerHTML = `
-      <img src="${product.image}" alt="${product.name}" class="w-20 h-auto rounded">
-      <div class="flex-grow">
-        <a href="${product.page}" class="font-semibold text-lg hover:underline">${product.name}</a>
-        <p class="text-sm text-gray-500">${formatPrice(product.price)} x ${quantity}</p>
-        <p class="text-sm font-semibold">Total: ${formatPrice(itemTotal)}</p>
-      </div>
-      <div class="flex flex-col items-end">
-        <button onclick="updateQuantity('${productId}', ${quantity - 1})" class="quantity-btn">−</button>
-        <span>${quantity}</span>
-        <button onclick="updateQuantity('${productId}', ${quantity + 1})" class="quantity-btn">+</button>
-      </div>
-    `;
-    container.appendChild(item);
-  });
-
-  document.getElementById('summary-subtotal').textContent = formatPrice(subtotal);
-  document.getElementById('summary-total').textContent = formatPrice(subtotal); // Shipping is free
-  document.getElementById('cart-count').textContent = Object.keys(cart).length ? ' ●' : '';
-}
-
-function updateQuantity(productId, quantity) {
-  let cart = JSON.parse(localStorage.getItem('localCart')) || {};
-  if (quantity <= 0) {
-    delete cart[productId];
-  } else {
-    cart[productId] = quantity;
-  }
-  localStorage.setItem('localCart', JSON.stringify(cart));
-  renderCart();
-}
-
-document.addEventListener('DOMContentLoaded', renderCart);
-
-
-  if (subtotal === 0) {
-    container.innerHTML = '<p>Your cart is empty.</p>';
-  }
-
-  document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
-  document.getElementById('summary-total').textContent = `$${subtotal.toFixed(2)}`;
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCart();
-  updateCartCount();
-});
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCart();
+    });
+  </script>
 </body>
 </html>
