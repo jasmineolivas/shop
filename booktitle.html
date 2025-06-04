@@ -178,11 +178,8 @@
 
 
         <div id="cart-controls-wrapper"></div>
-        <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" style="display:inline-block;margin-top:1rem;">
-  <button style="background:#333;color:white;padding:0.5rem 1rem;border:none;border-radius:0.5rem;cursor:pointer;">
-    Buy on Amazon
-  </button>
-</a>
+      </div>
+    </div>
 
       </div>
     </div>
@@ -199,7 +196,6 @@
   </section>
 
   <script>
-    let selectedSize = 'paperback';
 
 let selectedEdition = 'paperback';
 
@@ -247,76 +243,26 @@ function updateCartCount() {
 }
 
 
-function renderCart() {
+
+
+function renderCartControls() {
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const container = document.getElementById('cart-container');
-  container.innerHTML = '';
-  let subtotal = 0;
-  let bookCount = 0;
+  const id = `booktitle-${selectedEdition}`;
+  quantity = cart[id] || 0;
 
-  Object.entries(cart).forEach(([id, qty]) => {
-    const item = productData[id];
-    if (!item) return;
-    const itemTotal = item.price * qty;
-    subtotal += itemTotal;
-
-    if (id === 'booktitle') {
-      bookCount += qty;
-    }
-
-    const div = document.createElement('div');
-    div.className = 'flex flex-col md:flex-row gap-4 items-start md:items-center border-b pb-4';
-    div.innerHTML = 
-      <img src="${item.image}" alt="${item.name}" class="w-32 h-auto border" />
-      <div class="flex-1">
-        <h3 class="text-lg font-medium">${item.name}</h3>
-        <div class="flex items-center mt-2 space-x-2">
-          <button class="quantity-btn" onclick="changeQty('${id}', -1)">-</button>
-          <span class="px-3">${qty}</span>
-          <button class="quantity-btn" onclick="changeQty('${id}', 1)">+</button>
-          <button class="text-sm text-red-500 underline ml-4" onclick="removeItem('${id}')">Remove</button>
-        </div>
+  const container = document.getElementById('cart-controls-wrapper');
+  if (quantity === 0) {
+    container.innerHTML = `<div class="cart-controls"><button onclick="addToCart()">Add to Cart</button></div>`;
+  } else {
+    container.innerHTML = `
+      <div class="cart-controls">
+        <button onclick="decreaseQty()">-</button>
+        <span>${quantity} in cart</span>
+        <button onclick="increaseQty()">+</button>
       </div>
-      <div class="text-right md:text-left font-medium">$${itemTotal.toFixed(2)}</div>
-    ;
-    container.appendChild(div);
-  });
-
-  if (subtotal === 0) {
-    container.innerHTML = '<p>Your cart is empty.</p>';
+    `;
   }
-
-document.getElementById('shipping-amount').textContent = 
-  shipping === 0 ? "Free" : $${shipping.toFixed(2)};
-
-
-  document.getElementById('summary-subtotal').textContent = $${subtotal.toFixed(2)};
-  document.getElementById('summary-shipping').textContent = $${shippingCost.toFixed(2)};
-  document.getElementById('summary-total').textContent = $${total.toFixed(2)};
 }
-
-function changeQty(id, delta) {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  cart[id] = Math.max(0, (cart[id] || 0) + delta);
-  if (cart[id] === 0) delete cart[id];
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-  updateCartCount();
-}
-
-function removeItem(id) {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  delete cart[id];
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-  updateCartCount();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCart();
-  updateCartCount();
-});
-
 
 
 
@@ -338,30 +284,28 @@ function increaseQty() {
   renderCartControls();
 }
 
-function decreaseQty() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const id = booktitle-${selectedEdition};
-  cart[id] = Math.max(0, (cart[id] || 0) - 1);
-  if (cart[id] === 0) delete cart[id];
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
-  renderCartControls();
-}
+    function decreaseQty() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || {};
+      const id = `booktitle-${selectedEdition}`;
+      cart[id] = Math.max(0, (cart[id] || 0) - 1);
+      if (cart[id] === 0) delete cart[id];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      renderCartControls();
+    }
 
     document.getElementById('zoom-img').addEventListener('click', () => {
       const overlay = document.createElement('div');
       overlay.className = 'zoom-overlay';
-      overlay.innerHTML = <img src="images/booktitle.jpg" alt="Zoomed" />;
+      overlay.innerHTML = `<img src="images/booktitle.jpg" alt="Zoomed" />`;
       overlay.onclick = () => document.body.removeChild(overlay);
       document.body.appendChild(overlay);
     });
 
-document.addEventListener('DOMContentLoaded', () => {
-selectedEdition = localStorage.getItem('selectedEdition') || '6x9';
-document.getElementById('edition-select').value = selectedEdition;
-selectEdition(selectedEdition);
-  updateCartCount();
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    selectEdition('paperback'); // Set default edition
+    updateCartCount();          // Ensure cart bubble works
+  });
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
   updateCartCount();
