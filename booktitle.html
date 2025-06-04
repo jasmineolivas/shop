@@ -97,21 +97,6 @@
       font-size: 1rem;
       cursor: pointer;
     }
-    .button-row {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  align-items: center;
-}
-
-.amazon-controls button {
-  background-color: #D98F59;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
     .zoom-overlay {
       position: fixed;
       top: 0;
@@ -192,35 +177,26 @@
 </p>
 
 
-<div class="button-row">
-  <div id="cart-controls-wrapper"></div>
-  <div class="amazon-controls">
-    <a href="https://www.amazon.com/dp/YOURASIN" target="_blank">
-      <button>Buy on Amazon</button>
-    </a>
-  </div>
-</div>
+        <div id="cart-controls-wrapper"></div>
+        <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" style="display:inline-block;margin-top:1rem;">
+  <button style="background:#333;color:white;padding:0.5rem 1rem;border:none;border-radius:0.5rem;cursor:pointer;">
+    Buy on Amazon
+  </button>
+</a>
 
-
-<div class="policy-section">
-  <div>
-    <h3>Shipping</h3>
-    <p>All books ship via USPS Media Mail within 3–5 business days. You'll receive tracking info once your order ships.</p>
-  </div>
-  <div>
-    <h3>Returns</h3>
-    <p>All sales are final unless your item arrives damaged. If something’s wrong, contact me within 7 days of delivery.</p>
-  </div>
-  <div>
-    <h3>Questions?</h3>
-    <p>Email me at <a href="mailto:your@email.com">your@email.com</a> and I’ll get back to you as soon as I can.</p>
-  </div>
-</div>
-
-
-  <footer style="text-align: center; padding: 2rem 1rem; font-size: 0.9rem; color: #888;">
-    © 2025 Your Author Name. All rights reserved.
-  </footer>
+      </div>
+    </div>
+    <div class="policy-section">
+      <div>
+        <h3>Shipping Policy:</h3>
+        <p>Please allow 5-7 business days for packing and shipping of your book order. Orders typically arrive in 5-7 business days after they have been shipped. All prints are printed in the United States and shipped via USPS.</p>
+      </div>
+      <div>
+        <h3>Return Policy:</h3>
+        <p>All sales are final, however, if there are any concerns with your order please contact the shop within 48 hours of receiving your goods so we can find a solution.</p>
+      </div>
+    </div>
+  </section>
 
   <script>
     let selectedSize = 'paperback';
@@ -271,24 +247,75 @@ function updateCartCount() {
 }
 
 
-function renderCartControls(quantity) {
-  const container = document.getElementById('cart-controls-wrapper');
-  if (quantity === 0) {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="addToCart()">Add to Cart</button>
+function renderCart() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  const container = document.getElementById('cart-container');
+  container.innerHTML = '';
+  let subtotal = 0;
+  let bookCount = 0;
+
+  Object.entries(cart).forEach(([id, qty]) => {
+    const item = productData[id];
+    if (!item) return;
+    const itemTotal = item.price * qty;
+    subtotal += itemTotal;
+
+    if (id === 'booktitle') {
+      bookCount += qty;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'flex flex-col md:flex-row gap-4 items-start md:items-center border-b pb-4';
+    div.innerHTML = 
+      <img src="${item.image}" alt="${item.name}" class="w-32 h-auto border" />
+      <div class="flex-1">
+        <h3 class="text-lg font-medium">${item.name}</h3>
+        <div class="flex items-center mt-2 space-x-2">
+          <button class="quantity-btn" onclick="changeQty('${id}', -1)">-</button>
+          <span class="px-3">${qty}</span>
+          <button class="quantity-btn" onclick="changeQty('${id}', 1)">+</button>
+          <button class="text-sm text-red-500 underline ml-4" onclick="removeItem('${id}')">Remove</button>
+        </div>
       </div>
-    `;
-  } else {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="decreaseQty()">-</button>
-        <span>${quantity} in cart</span>
-        <button onclick="increaseQty()">+</button>
-      </div>
-    `;
+      <div class="text-right md:text-left font-medium">$${itemTotal.toFixed(2)}</div>
+    ;
+    container.appendChild(div);
+  });
+
+  if (subtotal === 0) {
+    container.innerHTML = '<p>Your cart is empty.</p>';
   }
+
+document.getElementById('shipping-amount').textContent = 
+  shipping === 0 ? "Free" : $${shipping.toFixed(2)};
+
+
+  document.getElementById('summary-subtotal').textContent = $${subtotal.toFixed(2)};
+  document.getElementById('summary-shipping').textContent = $${shippingCost.toFixed(2)};
+  document.getElementById('summary-total').textContent = $${total.toFixed(2)};
 }
+
+function changeQty(id, delta) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  cart[id] = Math.max(0, (cart[id] || 0) + delta);
+  if (cart[id] === 0) delete cart[id];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+  updateCartCount();
+}
+
+function removeItem(id) {
+  const cart = JSON.parse(localStorage.getItem('cart')) || {};
+  delete cart[id];
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+  updateCartCount();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderCart();
+  updateCartCount();
+});
 
 
 
@@ -341,154 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-  </script>
-  <script>
-    function getCartQuantityForProduct(productId) {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  return cart[productId] || 0;
-}
-
-function renderCartControls(quantity) {
-  const container = document.getElementById('cart-controls-wrapper');
-  if (!container) return;
-  
-  if (quantity === 0) {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="addToCart()">Add to Cart</button>
-      </div>
-    `;
-  } else {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="decreaseQty()">-</button>
-        <span>${quantity} in cart</span>
-        <button onclick="increaseQty()">+</button>
-      </div>
-    `;
-  }
-}
-
-// TEMPORARY — force render on page load:
-const productId = 'booktitle'; // use your actual product ID
-const quantity = getCartQuantityForProduct(productId);
-renderCartControls(quantity);
-</script>
-  <script>
-// Identify the product — use a unique key per book
-const productId = 'booktitle-paperback'; // or use edition value dynamically
-
-function getCart() {
-  return JSON.parse(localStorage.getItem('cart')) || {};
-}
-
-function saveCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function getCartQuantityForProduct(id) {
-  const cart = getCart();
-  return cart[id] || 0;
-}
-
-function renderCartControls(quantity) {
-  const container = document.getElementById('cart-controls-wrapper');
-  if (quantity === 0) {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="addToCart()">Add to Cart</button>
-      </div>
-    `;
-  } else {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="decreaseQty()">−</button>
-        <span>${quantity} in cart</span>
-        <button onclick="increaseQty()">+</button>
-      </div>
-    `;
-  }
-}
-
-function addToCart() {
-  const cart = getCart();
-  cart[productId] = 1;
-  saveCart(cart);
-  renderCartControls(1);
-  updateCartCount();
-}
-
-function increaseQty() {
-  const cart = getCart();
-  cart[productId] = (cart[productId] || 0) + 1;
-  saveCart(cart);
-  renderCartControls(cart[productId]);
-  updateCartCount();
-}
-
-function decreaseQty() {
-  const cart = getCart();
-  if (cart[productId]) {
-    cart[productId]--;
-    if (cart[productId] <= 0) {
-      delete cart[productId];
-      renderCartControls(0);
-    } else {
-      renderCartControls(cart[productId]);
-    }
-    saveCart(cart);
-    updateCartCount();
-  }
-}
-
-function updateCartCount() {
-  const cart = getCart();
-  const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-  const countEl = document.getElementById('cart-count');
-  countEl.textContent = count > 0 ? ' ⬤' : '';
-}
-
-// Optional: update productId on edition select
-function selectEdition(value) {
-  productId = 'booktitle-' + value;
-  const quantity = getCartQuantityForProduct(productId);
-  renderCartControls(quantity);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const quantity = getCartQuantityForProduct(productId);
-  renderCartControls(quantity);
-  updateCartCount();
-});
-</script>
-
-<script>
-    // Image zoom
-    const zoomImg = document.getElementById("zoom-img");
-    zoomImg.addEventListener("click", () => {
-      const overlay = document.createElement("div");
-      overlay.classList.add("zoom-overlay");
-      const zoomed = document.createElement("img");
-      zoomed.src = zoomImg.src;
-      overlay.appendChild(zoomed);
-      document.body.appendChild(overlay);
-      overlay.addEventListener("click", () => overlay.remove());
-    });
-
-    // Edition selector logic
-    function selectEdition(value) {
-      const price = document.getElementById("price");
-      const prices = {
-        paperback: "$15",
-        special1: "$25",
-        special2: "$35",
-        special3: "$50"
-      };
-      price.textContent = prices[value] || "$15";
-    }
-
-    // Dummy cart count example (you’ll replace this with real logic later)
-    document.getElementById("cart-count").textContent = " ●";
   </script>
 </body>
 </html>
