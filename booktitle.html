@@ -275,14 +275,22 @@ function renderCartControls() {
 
 
 
-    function addToCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || {};
-      const id = `booktitle-${selectedSize}`;
-      cart[id] = (cart[id] || 0) + 1;
-      localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount();
-      renderCartControls();
-    }
+function addToCart(productId) {
+  const cart = getCart();
+
+  if (cart[productId]) {
+    cart[productId].quantity += 1;
+  } else {
+    cart[productId] = {
+      id: productId,
+      quantity: 1
+    };
+  }
+
+  saveCart(cart);
+  updateCartCount();
+}
+
 
     function increaseQty() {
       const cart = JSON.parse(localStorage.getItem('cart')) || {};
