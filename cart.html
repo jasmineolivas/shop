@@ -138,63 +138,49 @@ function updateCartCount() {
 }
 
 function renderCart() {
-  const cartContainer = document.getElementById('cart-container');
   const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  cartContainer.innerHTML = '';
+  const container = document.getElementById('cart-container');
+  container.innerHTML = '';
   let subtotal = 0;
 
-  for (const key in cart) {
-    const quantity = cart[key];
-    const product = productData[key];
-
-    if (!product) continue;
-
-    const itemTotal = product.price * quantity;
+  Object.entries(cart).forEach(([id, qty]) => {
+    const item = productData[id];
+    if (!item) return;
+    const itemTotal = item.price * qty;
     subtotal += itemTotal;
 
-    const itemHTML = `
-      <div style="display: flex; gap: 1rem; align-items: center; border-bottom: 1px solid #eee; padding: 1rem 0;">
-        <a href="${product.page}" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 1rem;">
-          <img src="${product.image}" alt="${product.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-          <div>
-            <div style="font-weight: bold;">${product.name}</div>
-            <div>$${product.price.toFixed(2)} x ${quantity}</div>
-          </div>
-        </a>
-        <div style="margin-left: auto;">
-          <button onclick="updateQuantity('${key}', -1)">–</button>
-          <span>${quantity}</span>
-          <button onclick="updateQuantity('${key}', 1)">+</button>
-          <button onclick="removeItem('${key}')">Remove</button>
+    const div = document.createElement('div');
+    div.className = 'flex flex-col md:flex-row gap-4 items-start md:items-center border-b pb-4';
+
+    div.innerHTML = `
+      <a href="${item.page || '#'}">
+        <img src="${item.image}" alt="${item.name}" class="w-32 h-auto border" />
+      </a>
+      <div class="flex-1">
+        <h3 class="text-lg font-medium">
+          <a href="${item.page || '#'}" class="hover:underline">${item.name}</a>
+        </h3>
+        <div class="flex items-center mt-2 space-x-2">
+          <button class="quantity-btn" onclick="changeQty('${id}', -1)">-</button>
+          <span class="px-3">${qty}</span>
+          <button class="quantity-btn" onclick="changeQty('${id}', 1)">+</button>
+          <button class="text-sm text-red-500 underline ml-4" onclick="removeItem('${id}')">Remove</button>
         </div>
       </div>
+      <div class="text-right md:text-left font-medium">$${itemTotal.toFixed(2)}</div>
     `;
 
-    cartContainer.innerHTML += itemHTML;
+    container.appendChild(div);
+  });
+
+  if (subtotal === 0) {
+    container.innerHTML = '<p>Your cart is empty.</p>';
   }
 
   document.getElementById('summary-subtotal').textContent = `$${subtotal.toFixed(2)}`;
   document.getElementById('summary-total').textContent = `$${subtotal.toFixed(2)}`;
 }
 
-function updateQuantity(key, change) {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  if (cart[key]) {
-    cart[key] += change;
-    if (cart[key] <= 0) delete cart[key];
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-  }
-}
-
-function removeItem(key) {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  delete cart[key];
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-}
-
-renderCart();
 
 document.addEventListener('DOMContentLoaded', () => {
   renderCart();
