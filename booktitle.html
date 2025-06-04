@@ -259,6 +259,7 @@ function renderCartControls() {
   const id = booktitle-${selectedEdition};
   const quantity = cart[id] || 0;
 
+
   const container = document.getElementById('cart-controls-wrapper');
   if (quantity === 0) {
     container.innerHTML = 
