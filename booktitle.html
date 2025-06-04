@@ -114,6 +114,25 @@
       max-height: 90vh;
       cursor: zoom-out;
     }
+.store-button {
+  background-color: #D98F59;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-align: center;
+}
+.store-button.alt {
+  background-color: #333;
+}
+
+
 .policy-section {
   display: flex;
   justify-content: space-between;
@@ -177,12 +196,8 @@
 </p>
 
 
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1rem;">
-  <div id="cart-controls-wrapper"></div>
-  <a href="https://www.amazon.com/dp/YOURASIN" target="_blank">
-    <button style="background:#333; color:white; border:none; padding:0.5rem 1rem; border-radius:0.5rem; cursor:pointer;">Buy on Amazon</button>
-  </a>
-</div>
+<div id="cart-controls-wrapper"></div>
+
 
       </div>
     </div>
@@ -247,34 +262,33 @@ function updateCartCount() {
 }
 
 
-function renderCartControls() {
-  const cart = JSON.parse(localStorage.getItem('cart')) || {};
-  const id = `booktitle-${selectedEdition}`;
-  const quantity = cart[id] || 0;
+function renderCartControls(productId, productName, price, imageSrc, editionLabel) {
+  const cartControlsWrapper = document.getElementById('cart-controls-wrapper');
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const quantity = cart.filter(item => item.id === productId).length;
 
-  const amazonLink = `<a href="https://www.amazon.com/dp/YOURASIN" target="_blank">
-    <button style="background:#333;color:white;padding:0.5rem 1rem;border:none;border-radius:0.5rem;cursor:pointer;">
+  const addToCartButton = `
+    <div class="cart-controls">
+      <span>${quantity} in cart</span>
+      <button onclick="addToCart('${productId}', '${productName}', ${price}, '${imageSrc}', '${editionLabel}')">
+        Add to Cart
+      </button>
+    </div>
+  `;
+
+  const amazonLink = `
+    <a href="https://www.amazon.com/dp/YOURASIN" target="_blank" class="store-button alt">
       Buy on Amazon
-    </button>
-  </a>`;
+    </a>
+  `;
 
-  const container = document.getElementById('cart-controls-wrapper');
-  if (quantity === 0) {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="addToCart()">Add to Cart</button>
-      </div>`;
-  } else {
-    container.innerHTML = `
-      <div class="cart-controls">
-        <button onclick="decreaseQty()">-</button>
-        <span>${quantity} in cart</span>
-        <button onclick="increaseQty()">+</button>
-      </div>`;
-  }
+  cartControlsWrapper.innerHTML = `
+    <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1rem;">
+      ${addToCartButton}
+      ${amazonLink}
+    </div>
+  `;
 }
-
-
 
 
 function addToCart() {
